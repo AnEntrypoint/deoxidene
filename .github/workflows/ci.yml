@@ -34,6 +34,7 @@ jobs:
       - name: Bootstrap vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+          git -C "$VCPKG_ROOT" checkout 9c49a77ea9365898484a06379fa2340fd4851060
           "$VCPKG_ROOT/bootstrap-vcpkg.sh" || "$VCPKG_ROOT/bootstrap-vcpkg.bat"
         shell: bash
       - name: Configure + build
@@ -53,6 +54,7 @@ jobs:
       - name: Bootstrap vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+          git -C "$VCPKG_ROOT" checkout 9c49a77ea9365898484a06379fa2340fd4851060
           "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure + build asan-ubsan
         run: |
@@ -79,6 +81,7 @@ jobs:
       - name: Bootstrap vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+          git -C "$VCPKG_ROOT" checkout 9c49a77ea9365898484a06379fa2340fd4851060
           "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure (for compile_commands.json)
         run: cmake --preset debug
@@ -89,6 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Install wasi-sdk
         run: |
           curl -fsSL -o wasi-sdk.tar.gz https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-24/wasi-sdk-24.0-x86_64-linux.tar.gz
@@ -98,14 +102,15 @@ jobs:
       - name: Bootstrap vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+          git -C "$VCPKG_ROOT" checkout 9c49a77ea9365898484a06379fa2340fd4851060
           "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure + build wasip1
         run: |
           cmake --preset wasip1-release
           cmake --build build/wasip1-release
       - name: Install wasmtime
-        run: curl https://wasmtime.dev/install.sh -sSf | bash
-      - name: Run under wasmtime
         run: |
-          source "$HOME/.wasmtime/env"
-          wasmtime build/wasip1-release/examples/hello/deoxidene_hello.wasm 7
+          curl https://wasmtime.dev/install.sh -sSf | bash
+          echo "$HOME/.wasmtime/bin" >> "$GITHUB_PATH"
+      - name: Run under wasmtime
+        run: wasmtime build/wasip1-release/examples/hello/deoxidene_hello.wasm 7
