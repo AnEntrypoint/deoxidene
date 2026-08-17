@@ -6,7 +6,3 @@
   id: ci-matrix
   subject: 'Add .github/workflows/ci.yml building the matrix (ubuntu x64/arm64 cross, macos x64/arm64, windows x64/arm64, wasip1) via vcpkg manifest mode + CMakePresets, running clang-tidy as a gating job, running asan+ubsan preset build+example execution as a gating job. Precondition: cmake-presets, sanitizer-presets, wasip1-toolchain, clang-tidy-config done. Invariant: any matrix leg red blocks merge. Postcondition: CI green on a pushed commit exercising all legs.'
   status: pending
-- SESSION_ID: gm-1786957801-22371
-  id: publish-remote
-  subject: 'Create GitHub repo AnEntrypoint/deoxidene (if absent) and push main branch with full history under this build. Precondition: all prior rows resolved and committed locally. Invariant: single main branch, no stray branches left over. Postcondition: repo visible at github.com/AnEntrypoint/deoxidene with pushed main matching local HEAD.'
-  status: pending

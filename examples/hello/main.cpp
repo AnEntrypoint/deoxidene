@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstring>
+#include <limits>
 #include <string>
 
 #include "deoxidene/ownership.hpp"
@@ -7,7 +8,7 @@
 
 namespace {
 
-enum class ParseError { kEmpty, kNotNumeric };
+enum class ParseError { kEmpty, kNotNumeric, kOverflow };
 
 auto parse_positive_int(deoxidene::NotNull<const char*> text) -> deoxidene::Result<int, ParseError> {
     if (std::strlen(text.get()) == 0) {
@@ -18,7 +19,11 @@ auto parse_positive_int(deoxidene::NotNull<const char*> text) -> deoxidene::Resu
         if (*p < '0' || *p > '9') {
             return deoxidene::Fail<ParseError, int>(ParseError::kNotNumeric);
         }
-        value = (value * 10) + (*p - '0');
+        const int digit = *p - '0';
+        if (value > (std::numeric_limits<int>::max() - digit) / 10) {
+            return deoxidene::Fail<ParseError, int>(ParseError::kOverflow);
+        }
+        value = (value * 10) + digit;
     }
     return deoxidene::Ok<int, ParseError>(value);
 }
@@ -29,6 +34,8 @@ auto describe_error(ParseError err) -> const char* {
             return "empty input";
         case ParseError::kNotNumeric:
             return "not numeric";
+        case ParseError::kOverflow:
+            return "value overflows int";
     }
     return "unknown";
 }

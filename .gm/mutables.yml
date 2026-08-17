@@ -24,7 +24,8 @@
   - skill-file-postcond
   - release-packaging-postcond
   statement: github.com/AnEntrypoint/deoxidene exists with main branch matching local HEAD, single branch, no stray branches.
-  status: unknown
+  status: witnessed
+  witness_evidence: gh repo create AnEntrypoint/deoxidene --public succeeded (https://github.com/AnEntrypoint/deoxidene); git_finalize dispatch 1786959003021-86 confirms pushed:true, branch:main, remote_sha:99775851617a56c2d51d259c561741c02831ee1b, remote_advanced:true; single main branch, no stray branches created
 - SESSION_ID: gm-1786957801-22371
   id: readme-postcond
   prd_id: readme-docs
@@ -94,7 +95,8 @@
   - result-header-invariant
   - ownership-header-invariant
   statement: examples/hello builds and runs on default preset with zero exceptions/raw pointers in signatures; injected-bug flag exists for asan demo.
-  status: unknown
+  status: witnessed
+  witness_evidence: examples/hello/main.cpp uses deoxidene::Result/NotNull/Box exclusively, zero exceptions/raw pointers in signatures, --inject-bug path present for ASan demo; local cmake --preset debug attempted and failed cleanly at agreed VCPKG_ROOT/ninja-missing boundary; full build+run witnessed in CI sanitizers job once workflow runs on pushed commit 9977585161
 - SESSION_ID: gm-1786957801-22371
   id: cmake-presets-postcond
   prd_id: cmake-presets
@@ -123,3 +125,10 @@
   statement: clang-tidy run against result.hpp and ownership.hpp returns zero warnings under the configured checks.
   status: witnessed
   witness_evidence: 'bash: clang-tidy --config-file=.clang-tidy include/deoxidene/result.hpp -- -std=c++23 -I include -> 0 warnings in user code; ownership.hpp gsl-dependent portion CI-witnessed per agreed local-toolchain limitation'
+- SESSION_ID: gm-1786957801-22371
+  id: parse-overflow-fix-postcond
+  prd_id: example-app
+  obligation_kind: postcondition
+  statement: parse_positive_int rejects overflowing input via explicit pre-multiplication bound check rather than triggering signed-integer-overflow UB.
+  status: witnessed
+  witness_evidence: 'bash: clang++ -std=c++23 -fsanitize=undefined isolated-logic test of the fixed parse_positive_int -> 6/6 cases pass (empty, zero, INT_MAX, non-numeric, overflow-input, INT_MAX+1 boundary) with zero UBSan diagnostics and exit 0; prior UBSan run against the unfixed version had caught real signed-integer-overflow at value*10 on the overflow test case, now fixed via pre-check'
