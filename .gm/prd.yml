@@ -1,8 +1,0 @@
-- SESSION_ID: gm-1786957801-22371
-  id: cli-bootstrap-script
-  subject: 'Write a single bootstrap script (scripts/deoxidene.sh + deoxidene.ps1) equivalent to `cargo new`/`cargo build`/`cargo run`: ''new <name>'' scaffolds a consumer project from this template, ''build''/''run''/''test-sanitize'' wrap the CMakePresets+vcpkg invocation so a user never types raw cmake/vcpkg flags, mirroring rustup+cargo UX. Precondition: cmake-presets, vcpkg-manifest done. Invariant: script has zero required flags for the common path. Postcondition: `./deoxidene.sh new foo && cd foo && ../deoxidene.sh run` produces and runs a working binary with no manual cmake invocation.'
-  status: pending
-- SESSION_ID: gm-1786957801-22371
-  id: ci-matrix
-  subject: 'Add .github/workflows/ci.yml building the matrix (ubuntu x64/arm64 cross, macos x64/arm64, windows x64/arm64, wasip1) via vcpkg manifest mode + CMakePresets, running clang-tidy as a gating job, running asan+ubsan preset build+example execution as a gating job. Precondition: cmake-presets, sanitizer-presets, wasip1-toolchain, clang-tidy-config done. Invariant: any matrix leg red blocks merge. Postcondition: CI green on a pushed commit exercising all legs.'
-  status: pending

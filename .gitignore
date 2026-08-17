@@ -2,4 +2,4 @@ build/
 vcpkg_installed/
 .cache/
 *.wasm.map
-.gm/exec-spool/
+.gm/
