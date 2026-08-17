@@ -7,7 +7,7 @@
   "dependencies": [
     "ms-gsl",
     { "name": "tl-expected", "platform": "!wasm32" },
-    { "name": "boost-container", "platform": "!wasm32 & !(arm64 & linux)" }
+    { "name": "boost-container", "platform": "!wasm32" }
   ],
-  "builtin-baseline": "94a541197763a4f449a1b91478df48c0584a6256"
+  "builtin-baseline": "9c49a77ea9365898484a06379fa2340fd4851060"
 }
