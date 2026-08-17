@@ -1,2 +1,5 @@
 add_executable(deoxidene_hello main.cpp)
 target_link_libraries(deoxidene_hello PRIVATE deoxidene::deoxidene)
+if(CMAKE_SYSTEM_NAME STREQUAL "WASI")
+    set_target_properties(deoxidene_hello PROPERTIES SUFFIX ".wasm")
+endif()
