@@ -3,3 +3,6 @@ vcpkg_installed/
 .cache/
 *.wasm.map
 .gm/
+.agentplug-kv/
+config.bat
+node_modules
