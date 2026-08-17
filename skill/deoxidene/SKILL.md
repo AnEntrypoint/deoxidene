@@ -7,7 +7,8 @@ Build and modify C++23 code in a deoxidene-based project with Rust-equivalent sa
 - **Errors are `deoxidene::Result<T, E>`, never exceptions.** Include `deoxidene/result.hpp`. Return `deoxidene::Fail<E, T>(err)` / `deoxidene::Ok<T, E>(val)`. Never `throw`. Compile with `-fno-exceptions` to make violations a compile error.
 - **No raw owning pointers, ever.** Include `deoxidene/ownership.hpp`. Use `deoxidene::Box<T>` (unique ownership), `deoxidene::Rc<T>` (shared ownership), `deoxidene::NotNull<T*>` (non-null contract at API boundaries), `deoxidene::Span<T>` (bounds-checked array view). Never `new`/`delete`, never a bare `T*` parameter that could be null without a documented reason.
 - **Every change is verified via this repo's own scripts, never raw `cmake`/`clang++` invocations directly** (except transient standalone syntax checks during authoring, which must still be followed by the real preset build before declaring done). Use `scripts/deoxidene.ps1` on Windows (no WSL/git-bash dependency required), `scripts/deoxidene.sh` on Linux/macOS:
-  - `build [preset]` — configure + build a preset.
+  - `add <package>` — append a vcpkg dependency to `vcpkg.json` (cargo-add equivalent). Idempotent.
+  - `build [preset]` — configure + build a preset. Checks `VCPKG_ROOT`/`WASI_SDK_PREFIX` up front with an actionable error if missing.
   - `tidy` — clang-tidy gate (C++ Core Guidelines checks, the borrow-checker-equivalent static pass). Must return zero warnings before a change is done.
   - `test-sanitize` — ASan + UBSan build and run. Must exit 0 on the real path before a change is done.
   - `run [preset] [args]` — build then run the example.

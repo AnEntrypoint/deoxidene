@@ -10,11 +10,21 @@ deoxidene - cargo-equivalent wrapper over CMakePresets + vcpkg
 
 Usage:
   deoxidene.sh new <name>          Scaffold a new consumer project from this template
+  deoxidene.sh add <package>       Add a vcpkg dependency to vcpkg.json (cargo add equivalent)
   deoxidene.sh build [preset]      Configure + build (default preset: release)
   deoxidene.sh run [preset] [args] Build then run the hello example
   deoxidene.sh test-sanitize       Build + run under asan-ubsan preset
   deoxidene.sh tidy                Run clang-tidy over include/
 EOF
+}
+
+require_vcpkg_root() {
+    if [ -z "${VCPKG_ROOT:-}" ]; then
+        echo "error: VCPKG_ROOT is not set." >&2
+        echo "  deoxidene needs VCPKG_ROOT pointing at a vcpkg checkout to resolve dependencies." >&2
+        echo "  Fix: git clone https://github.com/microsoft/vcpkg && export VCPKG_ROOT=\"\$PWD/vcpkg\" && \"\$VCPKG_ROOT/bootstrap-vcpkg.sh\"" >&2
+        exit 1
+    fi
 }
 
 cmd_new() {
@@ -25,8 +35,34 @@ cmd_new() {
     echo "Scaffolded $name from deoxidene template."
 }
 
+cmd_add() {
+    local package="${1:?usage: deoxidene.sh add <package>}"
+    node -e '
+        const fs = require("fs");
+        const path = process.argv[1];
+        const pkg = process.argv[2];
+        const manifest = JSON.parse(fs.readFileSync(path, "utf8"));
+        if (!Array.isArray(manifest.dependencies)) manifest.dependencies = [];
+        const already = manifest.dependencies.some(d => (typeof d === "string" ? d : d.name) === pkg);
+        if (already) {
+            console.log(`${pkg} is already a dependency, no change made.`);
+        } else {
+            manifest.dependencies.push(pkg);
+            fs.writeFileSync(path, JSON.stringify(manifest, null, 2) + "\n");
+            console.log(`Added ${pkg} to vcpkg.json.`);
+        }
+    ' "$REPO_ROOT/vcpkg.json" "$package"
+}
+
 cmd_build() {
+    require_vcpkg_root
     local preset="${1:-release}"
+    if [ "$preset" = "wasip1-release" ] && [ -z "${WASI_SDK_PREFIX:-}" ]; then
+        echo "error: WASI_SDK_PREFIX is not set (required for the wasip1-release preset)." >&2
+        echo "  Fix: download wasi-sdk from https://github.com/WebAssembly/wasi-sdk/releases and" >&2
+        echo "       export WASI_SDK_PREFIX=/path/to/wasi-sdk" >&2
+        exit 1
+    fi
     cmake --preset "$preset" -S "$REPO_ROOT" -B "$REPO_ROOT/build/$preset"
     cmake --build "$REPO_ROOT/build/$preset"
 }
@@ -50,6 +86,7 @@ cmd_tidy() {
 
 case "${1:-}" in
     new) shift; cmd_new "$@" ;;
+    add) shift; cmd_add "$@" ;;
     build) shift; cmd_build "$@" ;;
     run) shift; cmd_run "$@" ;;
     test-sanitize) cmd_test_sanitize ;;

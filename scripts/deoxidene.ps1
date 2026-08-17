@@ -12,11 +12,23 @@ deoxidene - cargo-equivalent wrapper over CMakePresets + vcpkg
 
 Usage:
   deoxidene.ps1 new <name>          Scaffold a new consumer project from this template
+  deoxidene.ps1 add <package>       Add a vcpkg dependency to vcpkg.json (cargo add equivalent)
   deoxidene.ps1 build [preset]      Configure + build (default preset: release)
   deoxidene.ps1 run [preset] [args] Build then run the hello example
   deoxidene.ps1 test-sanitize       Build + run under asan-ubsan preset
   deoxidene.ps1 tidy                Run clang-tidy over include/
 "@
+}
+
+function Assert-VcpkgRoot {
+    if (-not $env:VCPKG_ROOT) {
+        Write-Error @"
+error: VCPKG_ROOT is not set.
+  deoxidene needs VCPKG_ROOT pointing at a vcpkg checkout to resolve dependencies.
+  Fix: git clone https://github.com/microsoft/vcpkg; `$env:VCPKG_ROOT = "`$PWD\vcpkg"; & "`$env:VCPKG_ROOT\bootstrap-vcpkg.bat"
+"@
+        exit 1
+    }
 }
 
 function Invoke-New {
@@ -30,8 +42,35 @@ function Invoke-New {
     Write-Host "Scaffolded $Name from deoxidene template."
 }
 
+function Invoke-Add {
+    param([string]$Package)
+    if (-not $Package) { throw "usage: deoxidene.ps1 add <package>" }
+    $manifestPath = Join-Path $RepoRoot 'vcpkg.json'
+    $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
+    $deps = @($manifest.dependencies)
+    $already = $deps | Where-Object {
+        if ($_ -is [string]) { $_ -eq $Package } else { $_.name -eq $Package }
+    }
+    if ($already) {
+        Write-Host "$Package is already a dependency, no change made."
+        return
+    }
+    $manifest.dependencies = $deps + $Package
+    ($manifest | ConvertTo-Json -Depth 10) | Set-Content -Path $manifestPath -Encoding utf8
+    Write-Host "Added $Package to vcpkg.json."
+}
+
 function Invoke-Build {
     param([string]$Preset = 'release')
+    Assert-VcpkgRoot
+    if ($Preset -eq 'wasip1-release' -and -not $env:WASI_SDK_PREFIX) {
+        Write-Error @"
+error: WASI_SDK_PREFIX is not set (required for the wasip1-release preset).
+  Fix: download wasi-sdk from https://github.com/WebAssembly/wasi-sdk/releases and
+       set `$env:WASI_SDK_PREFIX = "C:\path\to\wasi-sdk"
+"@
+        exit 1
+    }
     cmake --preset $Preset -S $RepoRoot -B (Join-Path $RepoRoot "build/$Preset")
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     cmake --build (Join-Path $RepoRoot "build/$Preset")
@@ -54,10 +93,14 @@ function Invoke-Tidy {
     clang-tidy -p (Join-Path $RepoRoot "build/debug") (Join-Path $RepoRoot "include/deoxidene/*.hpp")
 }
 
+if ($Rest -and $Rest.Length -gt 0) { $FirstArg = $Rest[0] } else { $FirstArg = 'release' }
+$NameArg = if ($Rest -and $Rest.Length -gt 0) { $Rest[0] } else { $null }
+
 switch ($Command) {
-    'new'           { Invoke-New -Name $Rest[0] }
-    'build'         { Invoke-Build -Preset ($Rest[0] ?? 'release') }
-    'run'           { Invoke-Run -Preset ($Rest[0] ?? 'release') -Args ($Rest[1..($Rest.Length-1)]) }
+    'new'           { Invoke-New -Name $NameArg }
+    'add'           { Invoke-Add -Package $NameArg }
+    'build'         { Invoke-Build -Preset $FirstArg }
+    'run'           { Invoke-Run -Preset $FirstArg -Args ($Rest[1..($Rest.Length-1)]) }
     'test-sanitize' { Invoke-TestSanitize }
     'tidy'          { Invoke-Tidy }
     default         { Show-Usage; exit 1 }
