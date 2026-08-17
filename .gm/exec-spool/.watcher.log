@@ -1,0 +1,305 @@
+evt: {"event":"wasm_panic","location":"crates/plugkit-core/src/orchestrator/mod.rs:183:26","message":"gm_dir: project root resolution failed after 5 attempts via `git rev-parse --show-toplevel --git-common-dir` -- refusing to silently fall back to CLAUDE_PROJECT_DIR/HOME, which would mis-root every stateful verb onto the wrong tree. Check for git subprocess/lock contention or a missing .git directory.","ts":1786957754751}
+evt: {"event":"plugin_poisoned_store_evicted","plugin":"gm","prior_dispatch_error":"error while executing at wasm backtrace:\n    0: 0x2cb9e0 - <unknown>!<wasm function 11085>\n    1: 0x2c099f - <unknown>!<wasm function 10900>\n    2: 0x2bc2b0 - <unknown>!<wasm function 10840>\n    3: 0x2bca55 - <unknown>!<wasm function 10851>\n    4: 0x2baa3f - <unknown>!<wasm function 10798>\n    5: 0x2bc89a - <unknown>!<wasm function 10848>\n    6: 0x2bbb57 - <unknown>!<wasm function 10833>\n    7: 0x2bb66d - <unknown>!<wasm function 10829>\n    8: 0x2bb5d5 - <unknown>!<wasm function 10828>\n    9: 0x2bcb38 - <unknown>!<wasm function 10854>\n   10: 0x2d6873 - <unknown>!<wasm function 11188>\n   11:  0x86e58 - <unknown>!<wasm function 2266>\n   12:  0xde40a - <unknown>!<wasm function 2634>\n   13:  0xde4b7 - <unknown>!<wasm function 2635>\n   14:  0x837b5 - <unknown>!<wasm function 2232>\n   15:  0x8273f - <unknown>!<wasm function 2228>\n   16: 0x117376 - <unknown>!<wasm function 2836>\n   17:  0xc09c9 - <unknown>!<wasm function 2448>\n   18:  0xc19d6 - <unknown>!<wasm function 2455>\n   19:  0x6c368 - <unknown>!<wasm function 2073>","reinstantiation_succeeded":true,"ts":1786957754758,"verb":"entry"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957763161,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957763306,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":397,"ts":1786957763323,"verb":"entry"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957772807,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957772954,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957789001,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957789161,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"dim":384,"event":"embed_generation_recorded","key":"b8b6f24106dd526a","model":"BAAI/bge-small-en-v1.5","scope":".gm/.embed-generation.rssearch_vectors","ts":1786957790734}
+evt: {"event":"recall_first_touch_sync","namespaces":["default"],"result":{"converged":false,"report":[{"changed":0,"deferred":0,"failed":0,"namespace":"default","rekeyed":0,"removed_keys":0,"resurrected":0,"retimed":0,"upserted":0}]},"ts":1786957790919}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":354,"ts":1786957790920}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":3,"ts":1786957790923}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":8,"ts":1786957790932}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":2,"ts":1786957790934}
+evt: {"event":"recall","hit":false,"mode":"kv_query","n_hits":0,"namespace":"default","query":"make easiest possible C based setup","sub":"memory","ts":1786957790935}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957791135,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957791313,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"instruction.served","mutables_pending_count":0,"phase":"SPECIFY","prd_pending_count":0,"ts":1786957791317}
+evt: {"event":"dispatch.end","ms":2505,"ts":1786957791318,"verb":"instruction"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957804816,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957805177,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":10,"ts":1786957805771}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":5,"ts":1786957805775}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957805790,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":18,"ts":1786957805798}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":4,"ts":1786957805802}
+evt: {"event":"dispatch.end","ms":1300,"ts":1786957805803,"verb":"recall"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957806220,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"codeinsight_rebuild","reason":"digest-absent","stored_then_current":"v3:14650fb0739d0383:files=0","ts":1786957806226}
+evt: {"dim":384,"event":"embed_generation_recorded","key":"b8b6f24106dd526a","model":"BAAI/bge-small-en-v1.5","scope":".gm/.embed-generation.code_chunks","ts":1786957806447}
+evt: {"dim":384,"event":"embed_generation_recorded","key":"b8b6f24106dd526a","model":"BAAI/bge-small-en-v1.5","scope":".gm/.embed-generation.memories","ts":1786957806449}
+evt: {"dim":384,"event":"embed_generation_recorded","key":"b8b6f24106dd526a","model":"BAAI/bge-small-en-v1.5","scope":".gm/.embed-generation.rssearch_vectors","ts":1786957806997}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":0,"ts":1786957806997}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":4,"ts":1786957807001}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":0,"ts":1786957807002}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":6,"ts":1786957807008}
+evt: {"dim":384,"event":"embed_generation_recorded","key":"b8b6f24106dd526a","model":"BAAI/bge-small-en-v1.5","scope":".gm/.embed-generation.code_chunks","ts":1786957807027}
+evt: {"dim":384,"event":"embed_generation_recorded","key":"b8b6f24106dd526a","model":"BAAI/bge-small-en-v1.5","scope":".gm/.embed-generation.memories","ts":1786957807029}
+evt: {"dim":384,"event":"embed_generation_recorded","key":"b8b6f24106dd526a","model":"BAAI/bge-small-en-v1.5","scope":".gm/.embed-generation.git_commit_vectors","ts":1786957807145}
+evt: {"event":"codesearch_degraded","kv_hits":0,"namespace":"codeinsight","ts":1786957807331}
+evt: {"event":"dispatch.end","ms":2011,"ts":1786957807332,"verb":"codesearch"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957815855,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957816497,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"embed.query_cache_hit","query_len":400,"ts":1786957816510}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":10,"ts":1786957816520}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":4,"ts":1786957816524}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":9,"ts":1786957816537}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":4,"ts":1786957816541}
+evt: {"event":"recall","hit":false,"mode":"kv_query","n_hits":0,"namespace":"default","query":"make easiest possible C based setup","sub":"memory","ts":1786957816542}
+evt: {"event":"instruction.served","mutables_pending_count":0,"phase":"SPECIFY","prd_pending_count":0,"ts":1786957816569}
+evt: {"event":"dispatch.end","ms":1056,"ts":1786957816569,"verb":"instruction"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957926200,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957926210,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957926274,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957926288,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957926404,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957926411,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.added","id":"repo-scaffold","rescoped":false,"ts":1786957926450}
+evt: {"event":"dispatch.end","ms":450,"ts":1786957926451,"verb":"prd-add"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957926480,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.added","id":"cli-bootstrap-script","rescoped":false,"ts":1786957926490}
+evt: {"event":"dispatch.end","ms":31,"ts":1786957926491,"verb":"prd-add"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957926496,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.added","id":"ci-matrix","rescoped":false,"ts":1786957926547}
+evt: {"event":"dispatch.end","ms":547,"ts":1786957926548,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"clang-tidy-config","rescoped":false,"ts":1786957926598}
+evt: {"event":"dispatch.end","ms":36,"ts":1786957926598,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"release-packaging","rescoped":false,"ts":1786957926622}
+evt: {"event":"dispatch.end","ms":622,"ts":1786957926623,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"skill-file","rescoped":false,"ts":1786957926646}
+evt: {"event":"prd.added","id":"result-type-header","rescoped":false,"ts":1786957926648}
+evt: {"event":"dispatch.end","ms":646,"ts":1786957926648,"verb":"prd-add"}
+evt: {"event":"dispatch.end","ms":33,"ts":1786957926648,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"ownership-header","rescoped":false,"ts":1786957926678}
+evt: {"event":"dispatch.end","ms":35,"ts":1786957926678,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"vcpkg-manifest","rescoped":false,"ts":1786957926701}
+evt: {"event":"dispatch.end","ms":33,"ts":1786957926702,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"cmake-presets","rescoped":false,"ts":1786957926724}
+evt: {"event":"dispatch.end","ms":29,"ts":1786957926724,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"sanitizer-presets","rescoped":false,"ts":1786957926743}
+evt: {"event":"dispatch.end","ms":47,"ts":1786957926744,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"publish-remote","rescoped":false,"ts":1786957926767}
+evt: {"event":"dispatch.end","ms":45,"ts":1786957926768,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"readme-docs","rescoped":false,"ts":1786957926789}
+evt: {"event":"dispatch.end","ms":41,"ts":1786957926790,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"example-app","rescoped":false,"ts":1786957926813}
+evt: {"event":"dispatch.end","ms":37,"ts":1786957926813,"verb":"prd-add"}
+evt: {"event":"prd.added","id":"wasip1-toolchain","rescoped":false,"ts":1786957926831}
+evt: {"event":"dispatch.end","ms":55,"ts":1786957926832,"verb":"prd-add"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957933066,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957933237,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"phase.transitioned","from":"SPECIFY","phase":"PROVE","ts":1786957933249}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":8,"ts":1786957934333}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":4,"ts":1786957934337}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":8,"ts":1786957934348}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":3,"ts":1786957934351}
+evt: {"event":"recall","hit":false,"mode":"kv_query","n_hits":0,"namespace":"default","query":"PROVE Create deoxidene repo root layout","sub":"memory","ts":1786957934351}
+evt: {"event":"dispatch.end","ms":1483,"ts":1786957934352,"verb":"transition"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957944854,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957945034,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"embed.query_cache_hit","query_len":400,"ts":1786957945115}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":8,"ts":1786957945124}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":3,"ts":1786957945127}
+evt: {"did_sync":false,"event":"recall_vector_phase_timing","namespaces":1,"sync_ms":8,"ts":1786957945138}
+evt: {"event":"recall_vector_phase_timing","outcome":"ok","search_ms":3,"ts":1786957945141}
+evt: {"event":"recall","hit":false,"mode":"kv_query","n_hits":0,"namespace":"default","query":"make easiest possible C based setup","sub":"memory","ts":1786957945142}
+evt: {"event":"instruction.served","mutables_pending_count":0,"phase":"PROVE","prd_pending_count":14,"ts":1786957945172}
+evt: {"event":"dispatch.end","ms":498,"ts":1786957945172,"verb":"instruction"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957995476,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786957995667,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.added","id":"skill-file","rescoped":false,"ts":1786957995694}
+evt: {"event":"dispatch.end","ms":498,"ts":1786957995695,"verb":"prd-add"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958042017,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958042021,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958042024,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958042033,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958042191,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.added","id":"repo-scaffold-typeshape","ts":1786958042215}
+evt: {"event":"dispatch.end","ms":421,"ts":1786958042216,"verb":"mutable-add"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958042220,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958042229,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958042234,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.added","id":"cli-bootstrap-postcond","ts":1786958042254}
+evt: {"event":"dispatch.end","ms":460,"ts":1786958042255,"verb":"mutable-add"}
+evt: evt: {"event":"mutable.added","id":"release-packaging-postcond","ts":1786958042269}{"event":"mutable.added","id":"publish-remote-postcond","ts":1786958042269}
+
+evt: {"event":"dispatch.end","ms":475,"ts":1786958042270,"verb":"mutable-add"}
+evt: {"event":"dispatch.end","ms":475,"ts":1786958042270,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"readme-postcond","ts":1786958042307}
+evt: {"event":"dispatch.end","ms":32,"ts":1786958042308,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"wasip1-postcond","ts":1786958042327}
+evt: {"event":"dispatch.end","ms":42,"ts":1786958042329,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"clang-tidy-postcond","ts":1786958042329}
+evt: {"event":"dispatch.end","ms":53,"ts":1786958042331,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"ownership-header-invariant","ts":1786958042361}
+evt: {"event":"dispatch.end","ms":34,"ts":1786958042363,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"vcpkg-manifest-postcond","ts":1786958042390}
+evt: {"event":"dispatch.end","ms":35,"ts":1786958042390,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"ci-matrix-postcond","ts":1786958042391}
+evt: {"event":"dispatch.end","ms":38,"ts":1786958042392,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"skill-file-postcond","ts":1786958042409}
+evt: {"event":"dispatch.end","ms":29,"ts":1786958042410,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"sanitizer-invariant","ts":1786958042445}
+evt: {"event":"dispatch.end","ms":37,"ts":1786958042446,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"result-header-invariant","ts":1786958042468}
+evt: {"event":"dispatch.end","ms":32,"ts":1786958042468,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"example-app-postcond","ts":1786958042469}
+evt: {"event":"dispatch.end","ms":61,"ts":1786958042470,"verb":"mutable-add"}
+evt: {"event":"mutable.added","id":"cmake-presets-postcond","ts":1786958042490}
+evt: {"event":"dispatch.end","ms":28,"ts":1786958042491,"verb":"mutable-add"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958248054,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958248229,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":380,"ts":1786958248233,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958260250,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958260418,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":423,"ts":1786958260507,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958272835,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958273025,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.resolved","id":"repo-scaffold-typeshape","ts":1786958273057}
+evt: {"event":"dispatch.end","ms":613,"ts":1786958273057,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958292439,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958292606,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.resolved","id":"repo-scaffold","ts":1786958292638}
+evt: {"event":"dispatch.end","ms":377,"ts":1786958292639,"verb":"prd-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958340875,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958341038,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":510,"ts":1786958341223,"verb":"exec_js"}
+evt: {"changed":["C:\\dev\\ctest/.gm/config-source-cache-default/gm.config.json"],"changed_count":1,"event":"config_changed","id":"cfg-implicit_default_repo-bb563bd864ce-1786958358015","new_sha":"bb563bd864ce","old_sha":"2ec8a67f2273","tier":"implicit_default_repo","ts":1786958358017}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958358203,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958358269,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958358356,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958358449,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.resolved","id":"cmake-presets-postcond","ts":1786958358476}
+evt: {"event":"dispatch.end","ms":9867,"ts":1786958358477,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958366804,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958366883,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":274,"ts":1786958366999,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958372006,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958372073,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":230,"ts":1786958372169,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958381479,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958381553,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.resolved","id":"cmake-presets","ts":1786958381583}
+evt: {"event":"dispatch.end","ms":243,"ts":1786958381584,"verb":"prd-resolve"}
+evt: {"event":"dispatch.end","ms":9,"ts":1786958382347,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958398301,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958398375,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":862,"ts":1786958399086,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958411760,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958411836,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":429,"ts":1786958412117,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958432498,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958432569,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":3762,"ts":1786958436191,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958443481,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958443580,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":184,"ts":1786958443587,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958448493,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958448561,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":427,"ts":1786958448849,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958460073,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958460186,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":1313,"ts":1786958461291,"verb":"exec_js"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958470464,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958470529,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.resolved","id":"ownership-header-invariant","ts":1786958470563}
+evt: {"event":"dispatch.end","ms":164,"ts":1786958470563,"verb":"mutable-resolve"}
+evt: {"event":"prd.resolved","id":"result-type-header","ts":1786958471709}
+evt: {"event":"dispatch.end","ms":29,"ts":1786958471710,"verb":"prd-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958473232,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958473297,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.resolved","id":"vcpkg-manifest","ts":1786958473333}
+evt: {"event":"dispatch.end","ms":168,"ts":1786958473333,"verb":"prd-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958475404,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958475477,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.resolved","id":"ownership-header","ts":1786958475511}
+evt: {"event":"dispatch.end","ms":183,"ts":1786958475512,"verb":"prd-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958641202,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958641233,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}evt: 
+{"event":"config_resolved","tier":"implicit_default_repo","ts":1786958641233,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958641238,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958641284,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":164,"ts":1786958641292,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958641320,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958641321,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958641325,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":208,"ts":1786958641335,"verb":"mutable-resolve"}
+evt: evt: {"event":"dispatch.end","ms":208,"ts":1786958641335,"verb":"mutable-resolve"}{"event":"mutable.resolved","id":"wasip1-postcond","ts":1786958641335}
+
+evt: {"event":"dispatch.end","ms":31,"ts":1786958641336,"verb":"mutable-resolve"}
+evt: {"event":"dispatch.end","ms":219,"ts":1786958641346,"verb":"mutable-resolve"}
+evt: {"event":"mutable.resolved","id":"cli-bootstrap-postcond","ts":1786958641390}
+evt: {"event":"dispatch.end","ms":34,"ts":1786958641390,"verb":"mutable-resolve"}
+evt: {"event":"mutable.resolved","id":"example-app-postcond","ts":1786958641409}
+evt: {"event":"dispatch.end","ms":51,"ts":1786958641409,"verb":"mutable-resolve"}
+evt: {"event":"mutable.resolved","id":"sanitizer-invariant","ts":1786958641414}
+evt: {"event":"dispatch.end","ms":57,"ts":1786958641415,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958676568,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958682835,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958682911,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958682981,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.added","id":"release-packaging-postcond","ts":1786958683006}
+evt: {"event":"dispatch.end","ms":6518,"ts":1786958683006,"verb":"mutable-add"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958705853,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958705921,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":146,"ts":1786958705929,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958715237,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958715346,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.added","id":"clang-tidy-postcond","ts":1786958715378}
+evt: {"event":"dispatch.end","ms":240,"ts":1786958715378,"verb":"mutable-add"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958724633,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958724725,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.resolved","id":"clang-tidy-postcond","ts":1786958724758}
+evt: {"event":"dispatch.end","ms":293,"ts":1786958724759,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958733991,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958734106,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.resolved","id":"ci-matrix-postcond","ts":1786958734131}
+evt: {"event":"dispatch.end","ms":258,"ts":1786958734132,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958746354,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958746418,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.resolved","id":"skill-file-postcond","ts":1786958746448}
+evt: {"event":"dispatch.end","ms":159,"ts":1786958746449,"verb":"mutable-resolve"}
+evt: {"event":"mutable.resolved","id":"release-packaging-postcond","ts":1786958747578}
+evt: {"event":"dispatch.end","ms":36,"ts":1786958747579,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958757173,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958757243,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"mutable.resolved","id":"readme-postcond","ts":1786958757272}
+evt: {"event":"dispatch.end","ms":168,"ts":1786958757272,"verb":"mutable-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958766623,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958766690,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.resolved","id":"clang-tidy-config","ts":1786958766718}
+evt: {"event":"dispatch.end","ms":163,"ts":1786958766719,"verb":"prd-resolve"}
+evt: {"event":"prd.resolved","id":"sanitizer-presets","ts":1786958768131}
+evt: {"event":"dispatch.end","ms":28,"ts":1786958768131,"verb":"prd-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958769888,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958769982,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.resolved","id":"wasip1-toolchain","ts":1786958770013}
+evt: {"event":"dispatch.end","ms":194,"ts":1786958770013,"verb":"prd-resolve"}
+evt: evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958787673,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}{"event":"config_resolved","tier":"implicit_default_repo","ts":1786958787673,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958787675,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958787679,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958787787,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958787790,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}{"event":"config_resolved","tier":"implicit_default_repo","ts":1786958787790,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958787790,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"prd.resolved","id":"release-packaging","ts":1786958787818}
+evt: {"event":"dispatch.end","ms":239,"ts":1786958787819,"verb":"prd-resolve"}
+evt: {"event":"prd.resolved","id":"cli-bootstrap-script","ts":1786958787838}
+evt: {"event":"dispatch.end","ms":259,"ts":1786958787839,"verb":"prd-resolve"}
+evt: {"event":"prd.resolved","id":"ci-matrix","ts":1786958787840}
+evt: {"event":"dispatch.end","ms":260,"ts":1786958787840,"verb":"prd-resolve"}
+evt: {"event":"prd.resolved","id":"example-app","ts":1786958787845}
+evt: {"event":"dispatch.end","ms":265,"ts":1786958787845,"verb":"prd-resolve"}
+evt: {"event":"prd.resolved","id":"skill-file","ts":1786958787874}
+evt: {"event":"dispatch.end","ms":39,"ts":1786958787875,"verb":"prd-resolve"}
+evt: {"event":"prd.resolved","id":"readme-docs","ts":1786958787900}
+evt: {"event":"dispatch.end","ms":36,"ts":1786958787901,"verb":"prd-resolve"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958792882,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958792991,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"dispatch.end","ms":224,"ts":1786958792998,"verb":"phase-status"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958804315,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"config_resolved","tier":"implicit_default_repo","ts":1786958804392,"version":1,"why":"gm's own shared default config repo at https://github.com/AnEntrypoint/gm-config (no project or user config.source.json configured)"}
+evt: {"event":"git.commit","repo":null,"sha":"fa64b800c8","summary":"deoxidene: C++23 boilerplate closing the Rust ergonomics gap","ts":1786958806754}

@@ -1,0 +1,1 @@
+{"dispatch_id":"1786957807334-4-dcbc3829faa116b4","error":"semantic retrieval unavailable (no vector hits and the embedder produced nothing) and the keyword fallback matched nothing -- this is NOT an empty-index result","error_code":"failed","next_dispatch_hint":"instruction","ok":false,"request_fingerprint":"7815043a51554ec3","verb":"codesearch"}

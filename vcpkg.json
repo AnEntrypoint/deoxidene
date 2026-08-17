@@ -1,0 +1,13 @@
+{
+  "name": "deoxidene",
+  "version-string": "0.1.0",
+  "description": "A C/C++ boilerplate closing the ergonomic gap with Rust: typed Result<T,E>, GSL ownership, deterministic packaging, sanitizer-gated CI, wasip1 + native cross-compilation.",
+  "homepage": "https://github.com/AnEntrypoint/deoxidene",
+  "license": "MIT OR Apache-2.0",
+  "dependencies": [
+    "ms-gsl",
+    { "name": "tl-expected", "platform": "!wasm32" },
+    { "name": "boost-container", "platform": "!wasm32" }
+  ],
+  "builtin-baseline": "master"
+}

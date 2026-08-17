@@ -1,0 +1,1 @@
+{"dispatch_id":"1786958641294-57-b40bce2bb5aca87","error":"mutable-resolve refused: skill-file-postcond depends_on unresolved id(s): cli-bootstrap-postcond, sanitizer-invariant -- resolve those first.","error_code":"failed","exitCode":1,"next_dispatch_hint":"instruction","ok":false,"request_fingerprint":"8a1a013d85e590ad","stdout":"","verb":"mutable-resolve"}
