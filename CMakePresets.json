@@ -99,7 +99,6 @@
       "name": "wasip1-release",
       "inherits": "base",
       "displayName": "wasm32-wasip1 release",
-      "toolchainFile": "${sourceDir}/cmake/wasip1.toolchain.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "VCPKG_TARGET_TRIPLET": "wasm32-wasip1",
