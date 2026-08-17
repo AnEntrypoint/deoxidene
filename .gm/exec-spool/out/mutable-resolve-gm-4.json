@@ -1,1 +1,0 @@
-{"dispatch_id":"1786958443591-50-8f3649504a9db7c6","error":"mutable id not found: result-header-invariant -- did you mean one of: ownership-header-invariant, sanitizer-invariant, readme-postcond","error_code":"failed","exitCode":1,"next_dispatch_hint":"instruction","ok":false,"request_fingerprint":"738523aba501cded","stdout":"","verb":"mutable-resolve"}

@@ -1,7 +1,7 @@
 # Next step
 
 Phase: PROVE
-Updated: 1786957945085
+Updated: 1786958880127
 
 ---
 
@@ -79,7 +79,29 @@ Write `in/<lang>/<N>.<ext>` for language stems, `in/<verb>/<N>.txt` for orchestr
 
 ## SESSION_ID
 
-Thread SESSION_ID through every spool body; plugkit rejects empty.
+Thread SESSION_ID through every spool body; plugkit rejects empty. Every fanned-out
+subagent mints its OWN SESSION_ID, distinct from the parent's and from every
+sibling's -- never inherit the parent's literal value. The daemon keys in-flight
+claims by the literal `(verb, session_id-N)` pair with no further partition, so
+concurrent subagents sharing one session_id collide on `<N>` even when each
+correctly prefixes it, silently reading each other's responses. A parent
+dispatching N subagents into the same project passes each a value derived from
+its own id plus an index (e.g. `<parent_session_id>-sub<k>`), never the bare
+parent id -- this is the interference-avoidance contract for concurrent gm
+subagents, not a suggestion.
+
+## Subagent fan-out
+
+Default to parallel subagent dispatch whenever the destructive transform's
+closure decomposes into independent slices -- do not serialize work a fan-out
+would cover concurrently. Every dispatched subagent's prompt says only "use the
+gm skill for this" (or an equivalent minimal pointer) plus the task-specific
+content; it never restates verb names, spool paths, JSON body shapes, or
+phase-chain mechanics, since `Skill(skill="gm")` already supplies all of that on
+invocation. Each subagent mints its own SESSION_ID per the SESSION_ID section
+above -- this is the interference-avoidance contract, not optional plumbing. A
+task that is a single focused mechanical edit stays single-session; fan-out
+serves genuine decomposition, never a manufactured split of one small task.
 
 ## Daemonize
 

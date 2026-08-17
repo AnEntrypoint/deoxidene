@@ -1,1 +1,0 @@
-{"data":"{\"duration_ms\":90,\"exit_code\":0,\"ok\":true,\"result\":null,\"stderr\":\"\",\"stdout\":\"{\\\"manifestMode\\\":true,\\\"depsCount\\\":3,\\\"baseline\\\":\\\"2026.01.01\\\"}\",\"timed_out\":false}","dispatch_id":"1786958372170-44-7e39a24bcacf9d7a","next_dispatch_hint":"instruction","ok":true,"request_fingerprint":"285d802d709589ef","verb":"exec_js"}
