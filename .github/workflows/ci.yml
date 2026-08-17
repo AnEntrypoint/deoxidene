@@ -34,7 +34,7 @@ jobs:
       - name: Bootstrap vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 9c49a77ea9365898484a06379fa2340fd4851060
+          git -C "$VCPKG_ROOT" checkout 2026.06.24
           "$VCPKG_ROOT/bootstrap-vcpkg.sh" || "$VCPKG_ROOT/bootstrap-vcpkg.bat"
         shell: bash
       - name: Configure + build
@@ -54,7 +54,7 @@ jobs:
       - name: Bootstrap vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 9c49a77ea9365898484a06379fa2340fd4851060
+          git -C "$VCPKG_ROOT" checkout 2026.06.24
           "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure + build asan-ubsan
         run: |
@@ -81,7 +81,7 @@ jobs:
       - name: Bootstrap vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 9c49a77ea9365898484a06379fa2340fd4851060
+          git -C "$VCPKG_ROOT" checkout 2026.06.24
           "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure (for compile_commands.json)
         run: cmake --preset debug
@@ -102,7 +102,7 @@ jobs:
       - name: Bootstrap vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 9c49a77ea9365898484a06379fa2340fd4851060
+          git -C "$VCPKG_ROOT" checkout 2026.06.24
           "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure + build wasip1
         run: |

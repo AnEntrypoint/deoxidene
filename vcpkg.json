@@ -9,5 +9,5 @@
     { "name": "tl-expected", "platform": "!wasm32" },
     { "name": "boost-container", "platform": "!wasm32" }
   ],
-  "builtin-baseline": "9c49a77ea9365898484a06379fa2340fd4851060"
+  "builtin-baseline": "52c9e08cdf8580d2d9762f547d22b96fd81e82f2"
 }
