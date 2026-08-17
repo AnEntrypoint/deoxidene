@@ -103,7 +103,8 @@
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "VCPKG_TARGET_TRIPLET": "wasm32-wasip1",
         "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/vcpkg-triplets",
-        "DEOXIDENE_BUILD_EXAMPLES": "ON"
+        "DEOXIDENE_BUILD_EXAMPLES": "ON",
+        "CMAKE_EXECUTABLE_SUFFIX": ".wasm"
       }
     }
   ],
