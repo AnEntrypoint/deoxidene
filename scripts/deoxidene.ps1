@@ -83,7 +83,7 @@ function Invoke-TestSanitize {
 
 function Invoke-Tidy {
     Invoke-Build -Preset 'debug'
-    clang-tidy -p (Join-Path $RepoRoot "build/debug") (Join-Path $RepoRoot "include/deoxidene/*.hpp")
+    clang-tidy -p (Join-Path $RepoRoot "build/debug") (Join-Path $RepoRoot "include/deoxidene/*.hpp") '--warnings-as-errors=*'
 }
 
 function Invoke-Bench {

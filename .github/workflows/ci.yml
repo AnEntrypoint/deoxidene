@@ -86,7 +86,7 @@ jobs:
       - name: Configure (for compile_commands.json)
         run: cmake --preset debug
       - name: Run clang-tidy
-        run: clang-tidy -p build/debug include/deoxidene/*.hpp
+        run: clang-tidy -p build/debug include/deoxidene/*.hpp --warnings-as-errors='*'
 
   native-perf:
     runs-on: ubuntu-latest

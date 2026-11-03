@@ -13,6 +13,7 @@ Build and modify C++23 code in a deoxidene-based project with Rust-equivalent sa
   - `test-sanitize` — ASan + UBSan build and run. Must exit 0 on the real path before a change is done.
   - `run [preset] [args]` — build then run the example.
   - `bench` — build the `native-perf` preset (LTO, host CPU tuning, benchmarks) and run `deoxidene_bench`. Exits non-zero if the Result and raw parsers disagree.
+  - `pgo` — profile-guided build of `native-perf`: instrumented build, trains on `deoxidene_bench`, then rebuilds optimized from that profile. GCC only.
 - **Cross-target claims require the real preset, not an assumption.** `cmake --list-presets` names every supported triplet (native x64/arm64 across Linux/Windows/macOS). A change claimed "portable" without exercising the relevant preset (locally if the toolchain is present, otherwise via this repo's CI matrix in `.github/workflows/ci.yml`) is an unwitnessed claim.
 - **`.clang-tidy` at repo root is the sole style/safety authority.** Never add a per-file suppression without a `// NOLINT(check-name): reason` comment naming why.
 

@@ -78,7 +78,18 @@ The `native-perf` preset builds a native Release for the build host with link-ti
 - `DEOXIDENE_LTO=ON` enables link-time optimization for deoxidene executables when the toolchain supports it.
 - `DEOXIDENE_BUILD_BENCH=ON` builds the benchmarks in `bench/`.
 
-The other presets leave all three off. Benchmark numbers depend on the machine, compiler and system load, so compare runs from the same host only.
+The other presets leave all three off. Benchmark numbers depend on the machine, compiler and system load, so compare runs from the same host only. Measured with `deoxidene.sh bench` on one x86-64 Linux host (g++ 15.2), best of 3 runs of 7 repeats each, in ns per parse:
+
+| Build | raw | `Result` |
+| --- | --- | --- |
+| Release, `-O2 -g` (`RelWithDebInfo`) | 6.18 | 6.74 |
+| `-O3` | 6.19 | 6.96 |
+| `-O3 -march=native` | 6.18 | 6.30 |
+| `-O3` with LTO | 6.34 | 6.81 |
+| `native-perf` (`-O3`, LTO, `-march=native`) | 5.71 | 6.03 |
+| `native-perf` with PGO (`deoxidene.sh pgo`) | 4.71 | 4.81 |
+
+PGO here is trained on the same benchmark it is measured on, so the last row is in-sample. For a real application, profile your own representative workload.
 
 ## Install the agent skill
 

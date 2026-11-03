@@ -16,6 +16,7 @@ Usage:
   deoxidene.sh test-sanitize       Build + run under asan-ubsan preset
   deoxidene.sh tidy                Run clang-tidy over include/
   deoxidene.sh bench               Build native-perf (LTO, host CPU tuning) and run the benchmark
+  deoxidene.sh pgo                 Profile-guided build of native-perf, trained on the benchmark (GCC only)
 EOF
 }
 
@@ -79,9 +80,22 @@ cmd_bench() {
     "$REPO_ROOT/build/native-perf/bench/deoxidene_bench"
 }
 
+cmd_pgo() {
+    require_vcpkg_root
+    local profile="$REPO_ROOT/build/pgo-profile"
+    local dir="$REPO_ROOT/build/pgo"
+    rm -rf "$profile" "$dir"
+    cmake --preset native-perf -S "$REPO_ROOT" -B "$dir" -DCMAKE_CXX_FLAGS="-fprofile-generate=$profile"
+    cmake --build "$dir" --target deoxidene_bench
+    "$dir/bench/deoxidene_bench" > /dev/null
+    cmake --preset native-perf -S "$REPO_ROOT" -B "$dir" -DCMAKE_CXX_FLAGS="-fprofile-use=$profile -fprofile-partial-training -Wno-missing-profile"
+    cmake --build "$dir" --target deoxidene_bench
+    "$dir/bench/deoxidene_bench"
+}
+
 cmd_tidy() {
     cmd_build debug
-    clang-tidy -p "$REPO_ROOT/build/debug" "$REPO_ROOT"/include/deoxidene/*.hpp
+    clang-tidy -p "$REPO_ROOT/build/debug" "$REPO_ROOT"/include/deoxidene/*.hpp --warnings-as-errors='*'
 }
 
 case "${1:-}" in
@@ -92,5 +106,6 @@ case "${1:-}" in
     test-sanitize) cmd_test_sanitize ;;
     tidy) cmd_tidy ;;
     bench) cmd_bench ;;
+    pgo) cmd_pgo ;;
     *) usage; exit 1 ;;
 esac
