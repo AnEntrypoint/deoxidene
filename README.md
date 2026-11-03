@@ -13,8 +13,8 @@ A C++23 boilerplate that closes the ergonomic and distributability gap between C
 | `cargo new` / `build` / `run` | `deoxidene.sh new` / `build` / `run` |
 | `cargo add <crate>` | `deoxidene.sh add <package>` appends to `vcpkg.json` |
 | `cargo test` + Miri-class UB detection | `deoxidene.sh test-sanitize` (ASan + UBSan preset), gated in CI |
-| `rustup target add` + cross-compile | CMakePresets triplets for x64/arm64 across Linux/Windows/macOS, plus a `wasm32-wasip1` toolchain + vcpkg overlay triplet |
-| `cargo build --release` publishing to crates.io | `.github/workflows/release.yml`: tag push cross-builds every target + wasip1, uploads as GitHub Release assets |
+| `rustup target add` + cross-compile | CMakePresets triplets for x64/arm64 across Linux/Windows/macOS |
+| `cargo build --release` publishing to crates.io | `.github/workflows/release.yml`: tag push cross-builds every target, uploads as GitHub Release assets |
 
 ## Quickstart
 
@@ -64,11 +64,9 @@ Run clang-tidy (C++ Core Guidelines, treated as the borrow-checker-equivalent st
 
 Native release presets: `x64-linux-release`, `arm64-linux-release`, `x64-windows-release`, `arm64-windows-release`, `x64-macos-release`, `arm64-macos-release`.
 
-WebAssembly: `wasip1-release` (requires `WASI_SDK_PREFIX` pointing at a wasi-sdk install), producing a `.wasm` module runnable under wasmtime.
+Sanitizer presets (native, non-MSVC only): `asan`, `ubsan`, `asan-ubsan`.
 
-Sanitizer presets (native, non-wasip1, non-MSVC only): `asan`, `ubsan`, `asan-ubsan`.
-
-Every `deoxidene.sh`/`.ps1` build command checks `VCPKG_ROOT` (and `WASI_SDK_PREFIX` for `wasip1-release`) up front and prints a specific, actionable fix if either is missing, instead of surfacing CMake's/vcpkg's own generic toolchain error.
+Every `deoxidene.sh`/`.ps1` build command checks `VCPKG_ROOT` up front and prints a specific, actionable fix if either is missing, instead of surfacing CMake's/vcpkg's own generic toolchain error.
 
 All presets are declared in `CMakePresets.json`; `cmake --list-presets` enumerates them.
 

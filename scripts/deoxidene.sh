@@ -31,7 +31,7 @@ require_vcpkg_root() {
 cmd_new() {
     local name="${1:?usage: deoxidene.sh new <name>}"
     mkdir -p "$name"
-    cp -r "$REPO_ROOT"/{CMakeLists.txt,CMakePresets.json,vcpkg.json,vcpkg-configuration.json,.clang-tidy,cmake,vcpkg-triplets,include} "$name"/
+    cp -r "$REPO_ROOT"/{CMakeLists.txt,CMakePresets.json,vcpkg.json,vcpkg-configuration.json,.clang-tidy,include} "$name"/
     mkdir -p "$name/src"
     echo "Scaffolded $name from deoxidene template."
 }
@@ -58,12 +58,6 @@ cmd_add() {
 cmd_build() {
     require_vcpkg_root
     local preset="${1:-release}"
-    if [ "$preset" = "wasip1-release" ] && [ -z "${WASI_SDK_PREFIX:-}" ]; then
-        echo "error: WASI_SDK_PREFIX is not set (required for the wasip1-release preset)." >&2
-        echo "  Fix: download wasi-sdk from https://github.com/WebAssembly/wasi-sdk/releases and" >&2
-        echo "       export WASI_SDK_PREFIX=/path/to/wasi-sdk" >&2
-        exit 1
-    fi
     cmake --preset "$preset" -S "$REPO_ROOT" -B "$REPO_ROOT/build/$preset"
     cmake --build "$REPO_ROOT/build/$preset"
 }

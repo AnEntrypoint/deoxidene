@@ -36,7 +36,7 @@ function Invoke-New {
     param([string]$Name)
     if (-not $Name) { throw "usage: deoxidene.ps1 new <name>" }
     New-Item -ItemType Directory -Force -Path $Name | Out-Null
-    foreach ($item in @('CMakeLists.txt','CMakePresets.json','vcpkg.json','vcpkg-configuration.json','.clang-tidy','cmake','vcpkg-triplets','include')) {
+    foreach ($item in @('CMakeLists.txt','CMakePresets.json','vcpkg.json','vcpkg-configuration.json','.clang-tidy','include')) {
         Copy-Item -Recurse -Force (Join-Path $RepoRoot $item) $Name
     }
     New-Item -ItemType Directory -Force -Path (Join-Path $Name 'src') | Out-Null
@@ -64,14 +64,6 @@ function Invoke-Add {
 function Invoke-Build {
     param([string]$Preset = 'release')
     Assert-VcpkgRoot
-    if ($Preset -eq 'wasip1-release' -and -not $env:WASI_SDK_PREFIX) {
-        Write-Error @"
-error: WASI_SDK_PREFIX is not set (required for the wasip1-release preset).
-  Fix: download wasi-sdk from https://github.com/WebAssembly/wasi-sdk/releases and
-       set `$env:WASI_SDK_PREFIX = "C:\path\to\wasi-sdk"
-"@
-        exit 1
-    }
     cmake --preset $Preset -S $RepoRoot -B (Join-Path $RepoRoot "build/$Preset")
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     cmake --build (Join-Path $RepoRoot "build/$Preset")
