@@ -17,6 +17,7 @@ Usage:
   deoxidene.ps1 run [preset] [args] Build then run the hello example
   deoxidene.ps1 test-sanitize       Build + run under asan-ubsan preset
   deoxidene.ps1 tidy                Run clang-tidy over include/
+  deoxidene.ps1 bench               Build native-perf (LTO, host CPU tuning) and run the benchmark
 "@
 }
 
@@ -93,6 +94,11 @@ function Invoke-Tidy {
     clang-tidy -p (Join-Path $RepoRoot "build/debug") (Join-Path $RepoRoot "include/deoxidene/*.hpp")
 }
 
+function Invoke-Bench {
+    Invoke-Build -Preset 'native-perf'
+    & (Join-Path $RepoRoot "build/native-perf/bench/deoxidene_bench")
+}
+
 if ($Rest -and $Rest.Length -gt 0) { $FirstArg = $Rest[0] } else { $FirstArg = 'release' }
 $NameArg = if ($Rest -and $Rest.Length -gt 0) { $Rest[0] } else { $null }
 
@@ -103,5 +109,6 @@ switch ($Command) {
     'run'           { Invoke-Run -Preset $FirstArg -Args ($Rest[1..($Rest.Length-1)]) }
     'test-sanitize' { Invoke-TestSanitize }
     'tidy'          { Invoke-Tidy }
+    'bench'         { Invoke-Bench }
     default         { Show-Usage; exit 1 }
 }

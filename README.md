@@ -72,6 +72,16 @@ Every `deoxidene.sh`/`.ps1` build command checks `VCPKG_ROOT` (and `WASI_SDK_PRE
 
 All presets are declared in `CMakePresets.json`; `cmake --list-presets` enumerates them.
 
+## Native performance profile
+
+The `native-perf` preset builds a native Release for the build host with link-time optimization, `-march=native` tuning and the benchmark target. `./scripts/deoxidene.sh bench` (or `.\scripts\deoxidene.ps1 bench`) builds it and runs `deoxidene_bench`: it times `deoxidene::Result` parsing against a plain bool-returning parser, prints ns/op for each, and exits non-zero if their results differ.
+
+- `DEOXIDENE_NATIVE_TUNE=ON` compiles for the build host's CPU. Those binaries do not run on other CPUs.
+- `DEOXIDENE_LTO=ON` enables link-time optimization for deoxidene executables when the toolchain supports it.
+- `DEOXIDENE_BUILD_BENCH=ON` builds the benchmarks in `bench/`.
+
+The other presets leave all three off. Benchmark numbers depend on the machine, compiler and system load, so compare runs from the same host only.
+
 ## Install the agent skill
 
 Copy `skill/deoxidene/SKILL.md` into `~/.claude/skills/deoxidene/` (or your agent's skill directory) to teach an AI agent the invariants: always `Result<T,E>` not exceptions, always `gsl::` wrappers not raw pointers, always run `tidy` + `test-sanitize` before declaring a change done, always drive builds through `deoxidene.sh`, never raw `cmake`.

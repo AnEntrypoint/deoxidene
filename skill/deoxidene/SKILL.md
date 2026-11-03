@@ -12,6 +12,7 @@ Build and modify C++23 code in a deoxidene-based project with Rust-equivalent sa
   - `tidy` — clang-tidy gate (C++ Core Guidelines checks, the borrow-checker-equivalent static pass). Must return zero warnings before a change is done.
   - `test-sanitize` — ASan + UBSan build and run. Must exit 0 on the real path before a change is done.
   - `run [preset] [args]` — build then run the example.
+  - `bench` — build the `native-perf` preset (LTO, host CPU tuning, benchmarks) and run `deoxidene_bench`. Exits non-zero if the Result and raw parsers disagree.
 - **Cross-target claims require the real preset, not an assumption.** `cmake --list-presets` names every supported triplet (native x64/arm64 across Linux/Windows/macOS, plus `wasip1-release`). A change claimed "portable" without exercising the relevant preset (locally if the toolchain is present, otherwise via this repo's CI matrix in `.github/workflows/ci.yml`) is an unwitnessed claim.
 - **`.clang-tidy` at repo root is the sole style/safety authority.** Never add a per-file suppression without a `// NOLINT(check-name): reason` comment naming why.
 
@@ -32,4 +33,5 @@ cmake --list-presets                     # enumerate every declared build target
 ./scripts/deoxidene.sh test-sanitize     # ASan+UBSan build and run — must exit 0
 ./scripts/deoxidene.sh tidy              # clang-tidy gate — must be warning-free
 ./scripts/deoxidene.sh run release 7     # build then run the hello example with arg 7
+./scripts/deoxidene.sh bench             # native-perf build + run benchmark
 ```

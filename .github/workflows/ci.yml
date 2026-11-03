@@ -88,6 +88,25 @@ jobs:
       - name: Run clang-tidy
         run: clang-tidy -p build/debug include/deoxidene/*.hpp
 
+  native-perf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Bootstrap vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+          git -C "$VCPKG_ROOT" checkout 2026.06.24
+          "$VCPKG_ROOT/bootstrap-vcpkg.sh"
+      - name: Configure + build native-perf
+        run: |
+          cmake --preset native-perf
+          cmake --build build/native-perf
+      - name: Run example
+        run: build/native-perf/examples/hello/deoxidene_hello 7
+      - name: Run benchmark
+        run: build/native-perf/bench/deoxidene_bench
+
   wasip1:
     runs-on: ubuntu-latest
     steps:

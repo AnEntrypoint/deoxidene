@@ -15,6 +15,7 @@ Usage:
   deoxidene.sh run [preset] [args] Build then run the hello example
   deoxidene.sh test-sanitize       Build + run under asan-ubsan preset
   deoxidene.sh tidy                Run clang-tidy over include/
+  deoxidene.sh bench               Build native-perf (LTO, host CPU tuning) and run the benchmark
 EOF
 }
 
@@ -79,6 +80,11 @@ cmd_test_sanitize() {
     "$REPO_ROOT/build/asan-ubsan/examples/hello/deoxidene_hello"
 }
 
+cmd_bench() {
+    cmd_build native-perf
+    "$REPO_ROOT/build/native-perf/bench/deoxidene_bench"
+}
+
 cmd_tidy() {
     cmd_build debug
     clang-tidy -p "$REPO_ROOT/build/debug" "$REPO_ROOT"/include/deoxidene/*.hpp
@@ -91,5 +97,6 @@ case "${1:-}" in
     run) shift; cmd_run "$@" ;;
     test-sanitize) cmd_test_sanitize ;;
     tidy) cmd_tidy ;;
+    bench) cmd_bench ;;
     *) usage; exit 1 ;;
 esac
