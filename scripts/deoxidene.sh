@@ -6,13 +6,13 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 usage() {
     cat <<'EOF'
-deoxidene - cargo-equivalent wrapper over CMakePresets + vcpkg
+deoxidene - cargo-equivalent wrapper over CMakePresets
 
 Usage:
   deoxidene.sh new <name>          Scaffold a new consumer project from this template
-  deoxidene.sh add <package>       Add a vcpkg dependency to vcpkg.json (cargo add equivalent)
   deoxidene.sh build [preset]      Configure + build (default preset: release)
   deoxidene.sh run [preset] [args] Build then run the hello example
+  deoxidene.sh test [preset]       Build then run the CTest suite (default preset: debug)
   deoxidene.sh test-sanitize       Build + run under asan-ubsan preset
   deoxidene.sh tidy                Run clang-tidy over include/
   deoxidene.sh bench               Build native-perf (LTO, host CPU tuning) and run the benchmark
@@ -20,44 +20,15 @@ Usage:
 EOF
 }
 
-require_vcpkg_root() {
-    if [ -z "${VCPKG_ROOT:-}" ]; then
-        echo "error: VCPKG_ROOT is not set." >&2
-        echo "  deoxidene needs VCPKG_ROOT pointing at a vcpkg checkout to resolve dependencies." >&2
-        echo "  Fix: git clone https://github.com/microsoft/vcpkg && export VCPKG_ROOT=\"\$PWD/vcpkg\" && \"\$VCPKG_ROOT/bootstrap-vcpkg.sh\"" >&2
-        exit 1
-    fi
-}
-
 cmd_new() {
     local name="${1:?usage: deoxidene.sh new <name>}"
     mkdir -p "$name"
-    cp -r "$REPO_ROOT"/{CMakeLists.txt,CMakePresets.json,vcpkg.json,vcpkg-configuration.json,.clang-tidy,include} "$name"/
+    cp -r "$REPO_ROOT"/{CMakeLists.txt,CMakePresets.json,.clang-tidy,include,third_party,tests} "$name"/
     mkdir -p "$name/src"
     echo "Scaffolded $name from deoxidene template."
 }
 
-cmd_add() {
-    local package="${1:?usage: deoxidene.sh add <package>}"
-    node -e '
-        const fs = require("fs");
-        const path = process.argv[1];
-        const pkg = process.argv[2];
-        const manifest = JSON.parse(fs.readFileSync(path, "utf8"));
-        if (!Array.isArray(manifest.dependencies)) manifest.dependencies = [];
-        const already = manifest.dependencies.some(d => (typeof d === "string" ? d : d.name) === pkg);
-        if (already) {
-            console.log(`${pkg} is already a dependency, no change made.`);
-        } else {
-            manifest.dependencies.push(pkg);
-            fs.writeFileSync(path, JSON.stringify(manifest, null, 2) + "\n");
-            console.log(`Added ${pkg} to vcpkg.json.`);
-        }
-    ' "$REPO_ROOT/vcpkg.json" "$package"
-}
-
 cmd_build() {
-    require_vcpkg_root
     local preset="${1:-release}"
     cmake --preset "$preset" -S "$REPO_ROOT" -B "$REPO_ROOT/build/$preset"
     cmake --build "$REPO_ROOT/build/$preset"
@@ -68,6 +39,12 @@ cmd_run() {
     shift || true
     cmd_build "$preset"
     "$REPO_ROOT/build/$preset/examples/hello/deoxidene_hello" "$@"
+}
+
+cmd_test() {
+    local preset="${1:-debug}"
+    cmd_build "$preset"
+    ctest --test-dir "$REPO_ROOT/build/$preset" --output-on-failure
 }
 
 cmd_test_sanitize() {
@@ -81,7 +58,6 @@ cmd_bench() {
 }
 
 cmd_pgo() {
-    require_vcpkg_root
     local profile="$REPO_ROOT/build/pgo-profile"
     local dir="$REPO_ROOT/build/pgo"
     rm -rf "$profile" "$dir"
@@ -100,9 +76,9 @@ cmd_tidy() {
 
 case "${1:-}" in
     new) shift; cmd_new "$@" ;;
-    add) shift; cmd_add "$@" ;;
     build) shift; cmd_build "$@" ;;
     run) shift; cmd_run "$@" ;;
+    test) shift; cmd_test "$@" ;;
     test-sanitize) cmd_test_sanitize ;;
     tidy) cmd_tidy ;;
     bench) cmd_bench ;;

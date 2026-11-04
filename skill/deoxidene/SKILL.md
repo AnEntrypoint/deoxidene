@@ -4,12 +4,14 @@ Build and modify C++23 code in a deoxidene-based project with Rust-equivalent sa
 
 ## Invariants (non-negotiable, every emission)
 
-- **Errors are `deoxidene::Result<T, E>`, never exceptions.** Include `deoxidene/result.hpp`. Return `deoxidene::Fail<E, T>(err)` / `deoxidene::Ok<T, E>(val)`. Never `throw`. Compile with `-fno-exceptions` to make violations a compile error.
-- **Small, short-lived collections use `deoxidene::SmallVec<T, N>`** (`deoxidene/containers.hpp`, Boost.Container `small_vector`): no heap allocation up to N elements. Use `std::vector` once a collection can outgrow N.
-- **No raw owning pointers, ever.** Include `deoxidene/ownership.hpp`. Use `deoxidene::Box<T>` (unique ownership), `deoxidene::Rc<T>` (shared ownership), `deoxidene::NotNull<T*>` (non-null contract at API boundaries), `deoxidene::Span<T>` (bounds-checked array view). Never `new`/`delete`, never a bare `T*` parameter that could be null without a documented reason.
+- **Errors are `deoxidene::Result<T, E>`, never exceptions.** Include `deoxidene/result.hpp`. Return `deoxidene::Fail<E, T>(err)` / `deoxidene::Ok<T, E>(val)`. Never `throw`. Compile with `-fno-exceptions` to make violations a compile error. `Result` is `std::expected`; the vendored `third_party/tl/expected.hpp` is used only when `<expected>` is unavailable.
+- **Standard C++23 only.** No package manager and no third-party libraries. Besides the standard library, use these in-house headers:
+  - `deoxidene/ownership.hpp`: `NotNull<T*>` (non-null contract at API boundaries), `Span<T>` (= `std::span<T>`), `Owner<T>` (= `T`, documentation only), `Box<T>` (unique ownership), `Rc<T>` (shared ownership).
+  - `deoxidene/containers.hpp`: `SmallVec<T, N>` (no heap allocation up to N elements). Element types must be trivially copyable and default-constructible. Use `std::vector` once a collection can outgrow N.
+- **No raw owning pointers, ever.** Include `deoxidene/ownership.hpp`. Use `Box<T>`, `Rc<T>`, `Span<T>`, `NotNull<T*>`. Never `new`/`delete`, never a bare `T*` parameter that could be null without a documented reason.
 - **Every change is verified via this repo's own scripts, never raw `cmake`/`clang++` invocations directly** (except transient standalone syntax checks during authoring, which must still be followed by the real preset build before declaring done). Use `scripts/deoxidene.ps1` on Windows (no WSL/git-bash dependency required), `scripts/deoxidene.sh` on Linux/macOS:
-  - `add <package>` — append a vcpkg dependency to `vcpkg.json` (cargo-add equivalent). Idempotent.
-  - `build [preset]` — configure + build a preset. Checks `VCPKG_ROOT` up front with an actionable error if missing.
+  - `build [preset]` — configure + build a preset (default `release`).
+  - `test [preset]` — build a preset (default `debug`), then run its CTest suite from `tests/` with output on failure. Must exit 0 before a change is done.
   - `tidy` — clang-tidy gate (C++ Core Guidelines checks, the borrow-checker-equivalent static pass). Must return zero warnings before a change is done.
   - `test-sanitize` — ASan + UBSan build and run. Must exit 0 on the real path before a change is done.
   - `run [preset] [args]` — build then run the example.
@@ -22,16 +24,18 @@ Build and modify C++23 code in a deoxidene-based project with Rust-equivalent sa
 
 1. Read the existing header/example shapes in `include/deoxidene/` and `examples/hello/main.cpp` before adding new code — match the established Result/ownership idiom rather than inventing a parallel one.
 2. Write the change using `Result<T,E>` and the `deoxidene::` ownership aliases exclusively.
-3. Run `./scripts/deoxidene.sh tidy` — fix every warning before proceeding.
-4. Run `./scripts/deoxidene.sh test-sanitize` — a clean run is required; any ASan/UBSan abort means the change has a real memory-safety or UB defect to fix, not suppress.
-5. If the change touches a specific target triplet's concerns (MSVC-specific sanitizer absence, etc.), verify against that preset directly, or push and watch the corresponding CI matrix leg.
-6. Never leave a `TODO`/`FIXME`/deferred-verification marker in place of running steps 3–5.
+3. Run `./scripts/deoxidene.sh test` — the CTest suite must pass.
+4. Run `./scripts/deoxidene.sh tidy` — fix every warning before proceeding.
+5. Run `./scripts/deoxidene.sh test-sanitize` — a clean run is required; any ASan/UBSan abort means the change has a real memory-safety or UB defect to fix, not suppress.
+6. If the change touches a specific target triplet's concerns (MSVC-specific sanitizer absence, etc.), verify against that preset directly, or push and watch the corresponding CI matrix leg.
+7. Never leave a `TODO`/`FIXME`/deferred-verification marker in place of running steps 3–6.
 
 ## Common commands (verified against this repo)
 
 ```bash
 cmake --list-presets                     # enumerate every declared build target
 ./scripts/deoxidene.sh build release     # native release build
+./scripts/deoxidene.sh test              # debug build + CTest suite — must exit 0
 ./scripts/deoxidene.sh test-sanitize     # ASan+UBSan build and run — must exit 0
 ./scripts/deoxidene.sh tidy              # clang-tidy gate — must be warning-free
 ./scripts/deoxidene.sh run release 7     # build then run the hello example with arg 7

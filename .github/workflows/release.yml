@@ -4,9 +4,6 @@ on:
   push:
     tags: ['v*.*.*']
 
-env:
-  VCPKG_ROOT: ${{ github.workspace }}/vcpkg
-
 jobs:
   build-artifact:
     strategy:
@@ -35,16 +32,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Bootstrap vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 2026.06.24
-          "$VCPKG_ROOT/bootstrap-vcpkg.sh" || "$VCPKG_ROOT/bootstrap-vcpkg.bat"
-        shell: bash
       - name: Configure + build
         run: |
           cmake --preset ${{ matrix.preset }}
-          cmake --install build/${{ matrix.preset }} --prefix out/${{ matrix.artifact }}
+          cmake --build build/${{ matrix.preset }}
+        shell: bash
+      - name: Test
+        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure
+        shell: bash
+      - name: Install
+        run: cmake --install build/${{ matrix.preset }} --prefix out/${{ matrix.artifact }}
         shell: bash
       - name: Package
         run: tar czf ${{ matrix.artifact }}.tar.gz -C out ${{ matrix.artifact }}

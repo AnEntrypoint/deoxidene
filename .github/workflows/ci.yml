@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  VCPKG_ROOT: ${{ github.workspace }}/vcpkg
-
 jobs:
   native-matrix:
     strategy:
@@ -31,16 +28,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Bootstrap vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 2026.06.24
-          "$VCPKG_ROOT/bootstrap-vcpkg.sh" || "$VCPKG_ROOT/bootstrap-vcpkg.bat"
-        shell: bash
       - name: Configure + build
         run: |
           cmake --preset ${{ matrix.preset }}
           cmake --build build/${{ matrix.preset }}
+        shell: bash
+      - name: Test
+        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure
         shell: bash
       - name: Run example
         run: build/${{ matrix.preset }}/examples/hello/deoxidene_hello 7
@@ -51,15 +45,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Bootstrap vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 2026.06.24
-          "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure + build asan-ubsan
         run: |
           cmake --preset asan-ubsan
           cmake --build build/asan-ubsan
+      - name: Test asan-ubsan
+        run: ctest --test-dir build/asan-ubsan --output-on-failure
       - name: Run clean path (must pass)
         run: build/asan-ubsan/examples/hello/deoxidene_hello 7
       - name: Run injected-bug path (must be caught by ASan)
@@ -78,11 +69,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Bootstrap vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 2026.06.24
-          "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure (for compile_commands.json)
         run: cmake --preset debug
       - name: Run clang-tidy
@@ -93,11 +79,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Bootstrap vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-          git -C "$VCPKG_ROOT" checkout 2026.06.24
-          "$VCPKG_ROOT/bootstrap-vcpkg.sh"
       - name: Configure + build native-perf
         run: |
           cmake --preset native-perf
@@ -106,4 +87,3 @@ jobs:
         run: build/native-perf/examples/hello/deoxidene_hello 7
       - name: Run benchmark
         run: build/native-perf/bench/deoxidene_bench
-

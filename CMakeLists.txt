@@ -6,27 +6,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(Microsoft.GSL CONFIG REQUIRED)
-find_package(Boost CONFIG REQUIRED COMPONENTS container)
-find_package(tl-expected CONFIG QUIET)
-
 add_library(deoxidene INTERFACE)
 add_library(deoxidene::deoxidene ALIAS deoxidene)
 
 target_include_directories(deoxidene INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party>
     $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(deoxidene INTERFACE Microsoft.GSL::GSL)
-target_link_libraries(deoxidene INTERFACE Boost::container)
-if(tl-expected_FOUND)
-    target_link_libraries(deoxidene INTERFACE tl::expected)
-    target_compile_definitions(deoxidene INTERFACE DEOXIDENE_HAS_TL_EXPECTED=1)
-endif()
-
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(deoxidene INTERFACE -Wall -Wextra -Wpedantic)
+elseif(MSVC)
+    target_compile_options(deoxidene INTERFACE /W4 /permissive-)
 endif()
 
 option(DEOXIDENE_NATIVE_TUNE "Tune generated code for the build host CPU (-march=native); binaries are not portable" OFF)
@@ -46,15 +38,15 @@ function(deoxidene_apply_lto target)
     endif()
 endfunction()
 
-option(DEOXIDENE_MIMALLOC "Replace the system allocator with mimalloc" OFF)
-if(DEOXIDENE_MIMALLOC)
-    find_package(mimalloc CONFIG REQUIRED)
-    target_link_libraries(deoxidene INTERFACE mimalloc)
-endif()
-
 option(DEOXIDENE_BUILD_EXAMPLES "Build deoxidene example programs" ON)
 if(DEOXIDENE_BUILD_EXAMPLES)
     add_subdirectory(examples/hello)
+endif()
+
+option(DEOXIDENE_BUILD_TESTS "Build deoxidene tests (run with ctest)" OFF)
+if(DEOXIDENE_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
 endif()
 
 option(DEOXIDENE_BUILD_BENCH "Build deoxidene benchmark programs" OFF)
@@ -64,5 +56,6 @@ endif()
 
 include(GNUInstallDirs)
 install(DIRECTORY include/deoxidene DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(TARGETS deoxidene EXPORT deoxideneTargets)
+install(DIRECTORY third_party/tl DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS deoxidene EXPORT deoxideneTargets INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(EXPORT deoxideneTargets FILE deoxideneTargets.cmake NAMESPACE deoxidene:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/deoxidene)
