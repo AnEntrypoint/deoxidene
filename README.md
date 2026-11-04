@@ -2,6 +2,8 @@
 
 A C++23 boilerplate that closes the ergonomic and distributability gap between C/C++ and Rust, without leaving the C++ ecosystem.
 
+The architecture decisions, the execution tiers (native hot-reload plugins, QuickJS-NG scripts, WebGPU), the options we rejected, and the measurements behind them are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 ## Gap closed
 
 | Rust mechanism | deoxidene mechanism |
