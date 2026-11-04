@@ -6,8 +6,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+find_package(Threads REQUIRED)
+
 add_library(deoxidene INTERFACE)
 add_library(deoxidene::deoxidene ALIAS deoxidene)
+target_link_libraries(deoxidene INTERFACE Threads::Threads)
 
 target_include_directories(deoxidene INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -59,3 +62,4 @@ install(DIRECTORY include/deoxidene DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(DIRECTORY third_party/tl DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(TARGETS deoxidene EXPORT deoxideneTargets INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(EXPORT deoxideneTargets FILE deoxideneTargets.cmake NAMESPACE deoxidene:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/deoxidene)
+install(FILES cmake/deoxideneConfig.cmake DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/deoxidene)

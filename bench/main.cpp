@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -14,6 +15,7 @@
 #endif
 
 #include "deoxidene/containers.hpp"
+#include "deoxidene/jobs.hpp"
 #include "deoxidene/parse.hpp"
 
 namespace {
@@ -23,6 +25,8 @@ using Clock = std::chrono::steady_clock;
 constexpr std::size_t kIterations = 20'000'000;
 constexpr std::size_t kRepeats = 7;
 constexpr std::array<std::string_view, 4> kInputs{"7", "42", "123456", "2147483647"};
+constexpr std::size_t kElements = 1'000'000;
+constexpr std::size_t kChunk = 16'384;
 
 template <typename T>
 inline void keep(T& value) {
@@ -105,6 +109,25 @@ auto best_of(Body body) -> std::pair<double, std::uint64_t> {
     return {best_ns, total};
 }
 
+auto kernel(std::size_t index) -> double {
+    double value = static_cast<double>(index % 1024) * 0.001;
+    for (int round = 0; round < 16; ++round) {
+        value = std::sqrt((value * value) + 1.0);
+    }
+    return value;
+}
+
+template <typename Run>
+auto best_ms(Run run) -> double {
+    double best = std::numeric_limits<double>::max();
+    for (std::size_t repeat = 0; repeat < kRepeats; ++repeat) {
+        const auto start = Clock::now();
+        run();
+        best = std::min(best, std::chrono::duration<double, std::milli>(Clock::now() - start).count());
+    }
+    return best;
+}
+
 }  // namespace
 
 auto main() -> int {
@@ -116,5 +139,26 @@ auto main() -> int {
     std::printf("parse Result         %8.3f ns/op  checksum=%llu\n", result_ns, static_cast<unsigned long long>(result_total));
     std::printf("collect std::vector  %8.3f ns/op  checksum=%llu\n", vector_ns, static_cast<unsigned long long>(vector_total));
     std::printf("collect SmallVec<8>  %8.3f ns/op  checksum=%llu\n", small_ns, static_cast<unsigned long long>(small_total));
-    return (raw_total == result_total && vector_total == small_total) ? 0 : 1;
+
+    std::vector<double> serial(kElements);
+    const double serial_ms = best_ms([&serial] {
+        for (std::size_t i = 0; i < kElements; ++i) {
+            serial[i] = kernel(i);
+        }
+    });
+
+    deoxidene::JobSystem jobs;
+    std::vector<double> parallel(kElements);
+    const double parallel_ms = best_ms([&jobs, &parallel] {
+        jobs.parallel_for(kElements, kChunk, [&parallel](std::size_t begin, std::size_t end) {
+            for (std::size_t i = begin; i < end; ++i) {
+                parallel[i] = kernel(i);
+            }
+        });
+    });
+    const bool same = serial == parallel;
+    std::printf("kernel serial       %8.2f ms per %zu elements\n", serial_ms, kElements);
+    std::printf("kernel parallel_for %8.2f ms with %zu workers + caller, speedup %.2fx, equal=%d\n", parallel_ms,
+                deoxidene::JobSystem::default_workers(), serial_ms / parallel_ms, same ? 1 : 0);
+    return (raw_total == result_total && vector_total == small_total && same) ? 0 : 1;
 }

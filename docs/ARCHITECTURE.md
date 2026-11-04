@@ -2,6 +2,7 @@
 
 This document records what deoxidene is built on, why, and what has been measured. Each decision is tagged:
 
+- **Tested**: implemented and covered by a CTest case, run on Linux with GCC.
 - **Measured**: a number or a build result from this repository's tooling, with the spike sources under `docs/spikes/`.
 - **Checked**: a fact confirmed from an upstream release page or the vendor's documentation, not yet built here.
 - **Planned**: decided, not implemented.
@@ -23,8 +24,8 @@ This document records what deoxidene is built on, why, and what has been measure
 | Hot reload | Versioned native plugin libraries, reloaded at frame boundaries | Measured on Linux | Spike below |
 | Scripting | QuickJS-NG, interpreter, ES2023 | Measured on Linux | Spike below |
 | GPU compute and graphics | WebGPU through the `webgpu.h` C API, shaders in WGSL, with wgpu-native binaries | Checked | Release assets listed below; not yet integrated |
-| Parallel work | Owned job system, fixed worker pool | Planned | Nothing built yet |
-| Memory | Frame arenas and persistent pools, spans and handles across boundaries | Planned | Zero-copy buffer sharing with QuickJS measured |
+| Parallel work | `JobSystem`: fixed worker pool, `parallel_for` with the caller taking part | Tested; speedup measured | Compute-bound kernel, 1M elements: 7.35x on 16 hardware threads, identical output |
+| Memory | `Arena` (frame-scoped bump allocation) and `Pool<T>` (persistent slots); spans across boundaries | Tested | Zero-copy buffer sharing with QuickJS measured; allocation budget still planned |
 
 ## Execution tiers
 
@@ -91,16 +92,18 @@ Also **measured:** the system `g++` builds the same plugin in 0.07 to 0.21 s. zi
 
 ## Memory model
 
-- **Frame arena.** A linear allocator reset at the end of each frame. Nothing is freed one object at a time.
-- **Persistent pools.** Fixed-size buffers with free lists, created at startup and reused across frames.
+- **Arena (`arena.hpp`, tested).** One block reserved at construction; `allocate<T>(n)` bumps an aligned offset and value-initializes the objects. It returns `kExhausted` instead of growing. `reset()` rewinds to the start of the same block, so the next frame reuses the memory. Requires trivially destructible `T` and alignment up to `alignof(std::max_align_t)`. Built on `std::pmr::monotonic_buffer_resource` with a null upstream, so it cannot allocate past its block.
+- **Pool (`pool.hpp`, tested).** Every slot is allocated up front. `acquire()` returns an index from a free list, and `release()` returns it. A slot keeps its contents, so a reused object keeps its buffers. Releasing an index that is out of range, or releasing when every slot is already free, terminates. Stale handles are not detected yet; generation-checked handles are planned.
 - **Views, not owners, across boundaries.** Plugins and scripts receive `std::span` views or generation-checked handles. Raw owning pointers do not cross a boundary.
 - **Zero-copy into scripts.** A pooled buffer is exposed to QuickJS as an `ArrayBuffer` (measured above). The script and the host see the same bytes.
-- **Staging for GPU.** Uploads go through a ring of reused staging buffers. Each frame takes the next slot.
-- **Allocation budget.** Planned: a debug build counts allocations inside the frame loop and fails a test when a frame allocates.
+- **Staging for GPU.** Uploads go through a ring of reused staging buffers. Each frame takes the next slot. Planned.
+- **Allocation budget.** Planned: a debug build counts allocations inside the frame loop and fails a test when a frame allocates. The arena and pool are the reason it can be strict.
 
 ## Parallelism
 
-- **Job system (planned).** A fixed pool with one worker per hardware thread. It offers `parallel_for` over chunks and a fork-join graph per frame. It is written in-house, with no TBB dependency. A work-stealing deque is added only when profiling shows the shared queue is the bottleneck.
+- **Job system (`jobs.hpp`, tested).** `JobSystem` starts `default_workers()` threads (hardware threads minus one). `parallel_for(count, chunk, body)` splits `[0, count)` into chunks that the workers and the calling thread claim with an atomic counter. The call returns when every chunk is done. A batch lives on the caller's stack, so a call allocates nothing. Calls are serialized by a mutex, a body must be const-callable and must not throw, and a body cannot call `parallel_for`. A `count` that fits in one chunk, or a system with zero workers, runs inline on the caller.
+- **Measured:** `deoxidene_bench` runs a 16-round `sqrt` kernel over 1M elements. Serial takes 38.3 ms; `parallel_for` with 15 workers and the caller takes 5.2 ms, a 7.35x speedup, and the two outputs are equal element by element. These numbers are from one run on a host with 12 usable CPUs (see the risks below).
+- **Not built yet.** Work-stealing (added only if profiling shows the shared queue is the bottleneck), and a fork-join graph per frame where tasks depend on each other.
 - **SIMD (planned).** Start with the compiler's auto-vectorization over structure-of-arrays layouts, which needs no dependency. Google Highway is the candidate for hand-written kernels, as an opt-in module. Not yet evaluated here.
 - **Serial and parallel sharing.** Both use the same spans and arenas, so a job reads and writes the buffer that the serial code produced, without a copy.
 - **GPU sharing.** Compute and graphics read the same staging and storage buffers through WebGPU.
@@ -109,7 +112,8 @@ Also **measured:** the system `g++` builds the same plugin in 0.07 to 0.21 s. zi
 ## Repository layout (target)
 
 ```
-include/deoxidene/   core headers: Result, NotNull, SmallVec, parse (planned: arena, pool, jobs)
+include/deoxidene/   core headers: Result, NotNull, SmallVec, parse, Arena, Pool, JobSystem
+cmake/               package config for find_package(deoxidene)
 third_party/tl/      vendored tl::expected (CC0), fallback only
 tests/               CTest suite
 bench/               benchmarks
@@ -125,21 +129,28 @@ Planned, not yet present: `host/` (window loop and plugin loader), `plugins/` (T
 
 Verified on Linux x86-64 (GCC 15.2):
 
-- The four CMake presets `debug`, `release`, `asan-ubsan` and `native-perf` configure, build and pass CTest.
-- The clang-tidy gate passes on `include/deoxidene/*.hpp` with warnings as errors.
-- The hello program compiles and links for Windows x86-64, macOS arm64, and Linux x86-64 and aarch64, with zig 0.14.1. Nothing was run on those targets.
+- The presets `debug`, `release`, `asan-ubsan` and `native-perf` configure, build and pass CTest. The debug suite also passed 300 repeated runs and the ASan+UBSan suite passed 100.
+- The clang-tidy gate passes on `include/deoxidene/*.hpp` with warnings as errors (clang-tidy 23.1.4).
+- `cmake --install` into a prefix, then an external project with `find_package(deoxidene CONFIG REQUIRED)` builds and runs against the installed headers.
+- The tests compile with zig 0.14.1 (libc++) for x86-64 Windows (MinGW), aarch64 macOS, and x86-64 and aarch64 Linux. Nothing was run on those targets. Zig prints notices about aarch64 feature names from its own LLVM; they are not diagnostics from this code.
+- The hello program compiles and links for the same four targets.
 
 Not verified:
 
-- Windows (MSVC and MinGW) and macOS **builds of the library and tests**. CI has not run.
+- Windows (MSVC and MinGW) and macOS **builds and runs of the library and tests**. CI has not run.
+- ThreadSanitizer. The `tsan` preset builds, but the binary aborts in this sandbox because it cannot disable ASLR. Run `./scripts/deoxidene.sh test tsan` on a machine that allows it, or in CI.
 - The scripts on Windows (`scripts/deoxidene.ps1`), since no PowerShell is installed here.
 - Hot reload on Windows and macOS.
 - QuickJS-NG cross builds (only the GCC host build was measured) and its v0.18.0 release.
 - wgpu-native: the release assets are listed, but nothing has been downloaded or linked.
 
+An earlier build directory kept a vcpkg toolchain in its CMake cache, although the presets no longer name one. The directories were removed and configured from scratch; the debug configure now shows no toolchain.
+
 ## Open risks
 
 - **Zig is pre-1.0.** Each release changes the standard library. Keep the zig pin in one place once it is used.
+- **Worker count can oversubscribe.** `JobSystem` takes its count from `std::thread::hardware_concurrency()`, which reported 16 here while `nproc` reported 12 usable CPUs. Under many parallel agents, each process will oversubscribe the machine. Planned: read the process's affinity where the platform exposes it, and let the caller pass a smaller count.
+- **The HMR rebuild runs on the frame thread,** so each rebuild stalls one frame by about 150 ms. A worker-thread build is planned, and the `JobSystem` is the place for it.
 - **Mojo on Windows.** The core does not depend on Mojo, so this is a missed option rather than a blocker. Revisit when native Windows ships.
 - **Noisy measurements.** The host had a load average of 6 to 10 during the call-overhead runs. Repeat the numbers on an idle machine before quoting them externally.
-- **MSVC behaviour** of the `SmallVec` and `NotNull` code is untested until CI runs.
+- **MSVC behaviour** of the `SmallVec`, `NotNull`, `Arena`, `Pool` and `JobSystem` code is untested until CI runs.

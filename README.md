@@ -63,7 +63,7 @@ Optional wrappers exist for the common steps: `scripts/deoxidene.sh` on Linux an
 
 Native release presets: `x64-linux-release`, `arm64-linux-release`, `x64-windows-release`, `arm64-windows-release`, `x64-macos-release`, `arm64-macos-release`.
 
-Development presets: `debug`, `release`, `native-perf`. Sanitizer presets: `asan`, `ubsan`, `asan-ubsan`. The sanitizer presets are for GCC and Clang only, not MSVC.
+Development presets: `debug`, `release`, `native-perf`. Sanitizer presets: `asan`, `ubsan`, `asan-ubsan`, `tsan`. The sanitizer presets are for GCC and Clang only, not MSVC.
 
 `cmake --list-presets` enumerates every preset in `CMakePresets.json`.
 
@@ -79,6 +79,16 @@ The rule: standard C++23 first, one vendored header only where a toolchain lacks
 | Non-null pointer | `deoxidene::NotNull<T*>`, in `ownership.hpp` | Replaces GSL's `not_null`; terminates on a null value |
 | Small vector | `deoxidene::SmallVec<T, N>`, in `containers.hpp` | Inline storage up to N elements, then `std::vector`; replaces Boost.Container's `small_vector` |
 | Parsing | `std::from_chars` | Standard and locale-free |
+
+## Memory and parallelism
+
+| Need | Choice | Why |
+| --- | --- | --- |
+| Per-frame scratch memory | `deoxidene::Arena`, in `arena.hpp` | One block reserved up front; `reset()` reuses it; reports exhaustion instead of growing |
+| Persistent objects that cycle | `deoxidene::Pool<T>`, in `pool.hpp` | Every slot allocated up front; acquire and release touch only a free list; slots keep their buffers |
+| Data-parallel loops | `deoxidene::JobSystem::parallel_for`, in `jobs.hpp` | Fixed worker threads; the caller takes part; a batch allocates nothing |
+
+The architecture behind these, and what is still planned, is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 Rejected, and why:
 
