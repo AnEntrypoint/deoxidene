@@ -5,6 +5,7 @@ Build and modify C++23 code in a deoxidene-based project with Rust-equivalent sa
 ## Invariants (non-negotiable, every emission)
 
 - **Errors are `deoxidene::Result<T, E>`, never exceptions.** Include `deoxidene/result.hpp`. Return `deoxidene::Fail<E, T>(err)` / `deoxidene::Ok<T, E>(val)`. Never `throw`. Compile with `-fno-exceptions` to make violations a compile error.
+- **Small, short-lived collections use `deoxidene::SmallVec<T, N>`** (`deoxidene/containers.hpp`, Boost.Container `small_vector`): no heap allocation up to N elements. Use `std::vector` once a collection can outgrow N.
 - **No raw owning pointers, ever.** Include `deoxidene/ownership.hpp`. Use `deoxidene::Box<T>` (unique ownership), `deoxidene::Rc<T>` (shared ownership), `deoxidene::NotNull<T*>` (non-null contract at API boundaries), `deoxidene::Span<T>` (bounds-checked array view). Never `new`/`delete`, never a bare `T*` parameter that could be null without a documented reason.
 - **Every change is verified via this repo's own scripts, never raw `cmake`/`clang++` invocations directly** (except transient standalone syntax checks during authoring, which must still be followed by the real preset build before declaring done). Use `scripts/deoxidene.ps1` on Windows (no WSL/git-bash dependency required), `scripts/deoxidene.sh` on Linux/macOS:
   - `add <package>` — append a vcpkg dependency to `vcpkg.json` (cargo-add equivalent). Idempotent.

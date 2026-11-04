@@ -1,8 +1,10 @@
 #pragma once
 
+#include <charconv>
 #include <cstdint>
-#include <limits>
+#include <memory>
 #include <string_view>
+#include <system_error>
 
 #include "deoxidene/result.hpp"
 
@@ -10,24 +12,22 @@ namespace deoxidene {
 
 enum class ParseError : std::uint8_t { kEmpty, kNotNumeric, kOverflow };
 
-namespace detail {
-inline constexpr int kDecimalBase = 10;
-}  // namespace detail
-
-[[nodiscard]] constexpr auto parse_positive_int(std::string_view text) -> Result<int, ParseError> {
+[[nodiscard]] inline auto parse_positive_int(std::string_view text) -> Result<int, ParseError> {
     if (text.empty()) {
         return Fail<ParseError, int>(ParseError::kEmpty);
     }
+    if (text.front() == '-') {
+        return Fail<ParseError, int>(ParseError::kNotNumeric);
+    }
+    const auto first = std::to_address(text.begin());
+    const auto last = std::to_address(text.end());
     int value = 0;
-    for (const char c : text) {
-        if (c < '0' || c > '9') {
-            return Fail<ParseError, int>(ParseError::kNotNumeric);
-        }
-        const int digit = c - '0';
-        if (value > (std::numeric_limits<int>::max() - digit) / detail::kDecimalBase) {
-            return Fail<ParseError, int>(ParseError::kOverflow);
-        }
-        value = (value * detail::kDecimalBase) + digit;
+    const auto [end, ec] = std::from_chars(first, last, value);
+    if (ec == std::errc::result_out_of_range) {
+        return Fail<ParseError, int>(ParseError::kOverflow);
+    }
+    if (ec != std::errc{} || end != last) {
+        return Fail<ParseError, int>(ParseError::kNotNumeric);
     }
     return Ok<int, ParseError>(value);
 }

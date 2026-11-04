@@ -91,6 +91,33 @@ The other presets leave all three off. Benchmark numbers depend on the machine, 
 
 PGO here is trained on the same benchmark it is measured on, so the last row is in-sample. For a real application, profile your own representative workload.
 
+## Library selection
+
+Each dependency either replaces hand-written code or a slower default:
+
+| Library | Used for | Why |
+| --- | --- | --- |
+| Microsoft GSL | `owner`, `not_null`, `span` | Header-only aliases with no runtime cost |
+| `std::expected` (tl-expected fallback) | `Result<T, E>` | Error flow without exceptions |
+| `std::from_chars` | `parse_positive_int` | Standard and locale-free; shorter than a hand-written digit loop and measured no slower |
+| Boost.Container | `deoxidene::SmallVec<T, N>` | Stores up to N elements inline, so small short-lived collections never touch the heap |
+| mimalloc | process allocator (`DEOXIDENE_MIMALLOC=ON`, set by `native-perf`) | Faster allocation under churn, with no code change |
+
+Measured with `deoxidene.sh bench` on one x86-64 Linux host (g++ 15.2), `native-perf` with mimalloc linked, best of 3 runs of 7 repeats, in ns/op:
+
+| Benchmark | ns/op |
+| --- | --- |
+| parse, raw bool parser | 5.61 |
+| parse, `Result` (`from_chars`) | 4.73 |
+| collect 4 ints, `std::vector` with `reserve(4)` | 6.95 |
+| collect 4 ints, `SmallVec<int, 8>` | 1.34 |
+
+- `SmallVec` avoids the heap only while the collection fits in N. Use `std::vector` for collections that can grow past it.
+- The collection benchmarks force each container into memory before reading it. Without that, the optimizer removed `SmallVec`'s storage and the numbers did not measure allocation.
+- Keep mimalloc off in sanitizer builds: it replaces the allocator that ASan instruments. The `asan` and `asan-ubsan` presets leave it off.
+- mimalloc is verified on Linux only; the Windows and macOS presets do not set `DEOXIDENE_MIMALLOC`.
+- The flag table above was measured before the `from_chars` parser and the mimalloc preset, so its numbers are not comparable to this section.
+
 ## Install the agent skill
 
 Copy `skill/deoxidene/SKILL.md` into `~/.claude/skills/deoxidene/` (or your agent's skill directory) to teach an AI agent the invariants: always `Result<T,E>` not exceptions, always `gsl::` wrappers not raw pointers, always run `tidy` + `test-sanitize` before declaring a change done, always drive builds through `deoxidene.sh`, never raw `cmake`.

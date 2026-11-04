@@ -7,7 +7,8 @@
   "dependencies": [
     "ms-gsl",
     "tl-expected",
-    "boost-container"
+    "boost-container",
+    "mimalloc"
   ],
   "builtin-baseline": "52c9e08cdf8580d2d9762f547d22b96fd81e82f2"
 }

@@ -103,7 +103,8 @@
         "CMAKE_BUILD_TYPE": "Release",
         "DEOXIDENE_LTO": "ON",
         "DEOXIDENE_NATIVE_TUNE": "ON",
-        "DEOXIDENE_BUILD_BENCH": "ON"
+        "DEOXIDENE_BUILD_BENCH": "ON",
+        "DEOXIDENE_MIMALLOC": "ON"
       }
     }
   ],

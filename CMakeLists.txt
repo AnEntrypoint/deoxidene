@@ -7,7 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Microsoft.GSL CONFIG REQUIRED)
-find_package(Boost CONFIG COMPONENTS container QUIET)
+find_package(Boost CONFIG REQUIRED COMPONENTS container)
 find_package(tl-expected CONFIG QUIET)
 
 add_library(deoxidene INTERFACE)
@@ -19,9 +19,7 @@ target_include_directories(deoxidene INTERFACE
 )
 
 target_link_libraries(deoxidene INTERFACE Microsoft.GSL::GSL)
-if(Boost_FOUND)
-    target_link_libraries(deoxidene INTERFACE Boost::container)
-endif()
+target_link_libraries(deoxidene INTERFACE Boost::container)
 if(tl-expected_FOUND)
     target_link_libraries(deoxidene INTERFACE tl::expected)
     target_compile_definitions(deoxidene INTERFACE DEOXIDENE_HAS_TL_EXPECTED=1)
@@ -47,6 +45,12 @@ function(deoxidene_apply_lto target)
         set_property(TARGET ${target} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
     endif()
 endfunction()
+
+option(DEOXIDENE_MIMALLOC "Replace the system allocator with mimalloc" OFF)
+if(DEOXIDENE_MIMALLOC)
+    find_package(mimalloc CONFIG REQUIRED)
+    target_link_libraries(deoxidene INTERFACE mimalloc)
+endif()
 
 option(DEOXIDENE_BUILD_EXAMPLES "Build deoxidene example programs" ON)
 if(DEOXIDENE_BUILD_EXAMPLES)
