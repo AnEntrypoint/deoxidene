@@ -6,3 +6,9 @@ vcpkg_installed/
 .agentplug-kv/
 config.bat
 node_modules
+.playwriter/
+runs/
+.claude/scheduled_tasks.lock
+.env
+.env.*
+!.env.example
